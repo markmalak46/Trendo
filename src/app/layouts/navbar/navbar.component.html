@@ -1,0 +1,213 @@
+<nav
+    class="sticky top-0 z-40 w-full border-b border-neutral-100 bg-white/90 backdrop-blur-md px-4 sm:px-6 lg:px-8 py-5 font-sans transition-all duration-300 shadow-sm">
+    <div class="mx-auto flex max-w-350 items-center justify-between gap-4">
+
+        <!-- Logo -->
+        <a routerLink="/home" class="shrink-0 cursor-pointer flex items-center gap-2">
+            <img src="/assets/logo.png" alt="Trendo Logo" class="h-8 object-contain" />
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="hidden items-center gap-8 lg:gap-10 md:flex">
+            <a routerLink="/home" routerLinkActive="active"
+                class="relative text-xs uppercase font-bold tracking-[0.2em] text-neutral-400 hover:text-[#c49a7a] transition-colors py-1 group">
+                Home
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a routerLink="/shop" routerLinkActive="active"
+                class="relative text-xs uppercase font-bold tracking-[0.2em] text-neutral-400 hover:text-[#c49a7a] transition-colors py-1 group">
+                Shop
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a routerLink="/categories" routerLinkActive="active"
+                class="relative text-xs uppercase font-bold tracking-[0.2em] text-neutral-400 hover:text-[#c49a7a] transition-colors py-1 group">
+                Categories
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a routerLink="/brands" routerLinkActive="active"
+                class="relative text-xs uppercase font-bold tracking-[0.2em] text-neutral-400 hover:text-[#c49a7a] transition-colors py-1 group">
+                Brands
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-full"></span>
+            </a>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center gap-5 lg:gap-6">
+            <button routerLink="/wishlist"
+                class="relative cursor-pointer flex items-center justify-center text-neutral-900 hover:text-[#c49a7a] transition-transform duration-300 hover:scale-110 group">
+                <i class="fa-solid fa-heart text-xl"></i>
+                @if (wishlistCount() > 0) {
+                <span
+                    class="absolute -top-1.5 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#c49a7a] text-[8px] font-bold text-white shadow-sm">{{
+                    wishlistCount() }}</span>
+                }
+            </button>
+            <button routerLink="/cart"
+                class="relative cursor-pointer flex items-center justify-center text-neutral-900 hover:text-[#c49a7a] transition-transform duration-300 hover:scale-110 group">
+                <i class="fas fa-shopping-bag text-xl"></i>
+                @if (cartBadgeNumber() > 0) {
+                <span
+                    class="absolute -top-1.5 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-[#c49a7a] text-[8px] font-bold text-white group-hover:bg-[#c49a7a] transition-colors shadow-sm">{{
+                    cartBadgeNumber() }}</span>
+                }
+            </button>
+
+            <div class="hidden sm:flex items-center pl-5 lg:pl-6 ml-2 border-l border-neutral-200 gap-3">
+                @if(isLogged()){
+                <a routerLink="/profile" class="flex items-center gap-2.5 group cursor-pointer">
+                    <div
+                        class="w-8 h-8 rounded-full bg-linear-to-br from-[#c49a7a] to-neutral-700 flex items-center justify-center text-white text-xs font-bold shadow-sm group-hover:scale-110 transition-transform">
+                        {{ userName().charAt(0).toUpperCase() }}
+                    </div>
+                    <span
+                        class="text-xs font-bold text-neutral-700 group-hover:text-[#c49a7a] transition-colors hidden lg:block max-w-24 truncate">{{
+                        userName().split(' ')[0] }}</span>
+                </a>
+                <button (click)="openSignOutModal()"
+                    class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-white hover:bg-[#c49a7a] border border-neutral-900 hover:border-[#c49a7a] px-4 py-2 transition-all duration-300 cursor-pointer">Sign
+                    Out</button>
+                }@else {
+                <button routerLink="/register"
+                    class="text-xs uppercase font-bold tracking-[0.2em] text-white hover:text-white hover:bg-[#c49a7a] hover:border-[#c49a7a] bg-neutral-900 border border-neutral-900 px-4 py-2 transition-all duration-300 cursor-pointer">Create
+                    Account</button>
+                <button routerLink="/login"
+                    class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] border border-neutral-900 hover:border-[#c49a7a] px-4 py-2 transition-all duration-300 cursor-pointer">Sign
+                    In</button>
+                }
+            </div>
+
+            <button type="button" data-drawer-target="drawer-right" data-drawer-show="drawer-right"
+                data-drawer-placement="right"
+                class="md:hidden cursor-pointer flex items-center justify-center text-neutral-900 hover:text-[#c49a7a] transition-transform duration-300 hover:scale-110 ml-2">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+
+        </div>
+    </div>
+</nav>
+
+<div id="drawer-right"
+    class="fixed top-0 right-0 z-50 h-screen w-full sm:w-100 border-l border-neutral-200 overflow-y-auto bg-white p-8 shadow-2xl transition-transform translate-x-full duration-500 ease-in-out font-sans flex flex-col"
+    tabindex="-1">
+
+    <div class="mb-12 flex items-center justify-between">
+        <img src="/assets/logo.png" alt="Trendo Logo" class="h-6 object-contain" />
+        <button type="button" data-drawer-hide="drawer-right"
+            class="flex cursor-pointer items-center justify-center h-8 w-8 text-neutral-900 transition-transform hover:rotate-90 duration-500">
+            <i class="fas fa-times text-xl"></i>
+        </button>
+    </div>
+
+    <!-- links  -->
+    <nav class="mb-10 flex flex-col gap-6">
+        <a routerLink="/" data-drawer-hide="drawer-right"
+            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
+            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Home
+        </a>
+        <a routerLink="/shop" data-drawer-hide="drawer-right"
+            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
+            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Shop
+        </a>
+        <a routerLink="/categories" data-drawer-hide="drawer-right"
+            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
+            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Categories
+        </a>
+        <a routerLink="/brands" data-drawer-hide="drawer-right"
+            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
+            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Brands
+        </a>
+    </nav>
+
+    <div class="w-8 h-px bg-neutral-900 mb-10"></div>
+
+    <div class="flex flex-col gap-6 mb-10">
+        <a routerLink="/wishlist" data-drawer-hide="drawer-right"
+            class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-500 hover:text-[#c49a7a] transition-colors flex items-center gap-3">
+            <i class="fa-solid fa-heart text-base"></i> Wishlist
+        </a>
+        <a routerLink="/cart" data-drawer-hide="drawer-right"
+            class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-500 hover:text-[#c49a7a] transition-colors flex items-center gap-3">
+            <i class="fas fa-shopping-bag text-base"></i> My Cart ({{ cartBadgeNumber() }})
+        </a>
+        @if(isLogged()) {
+        <a routerLink="/allorders" data-drawer-hide="drawer-right"
+            class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-500 hover:text-[#c49a7a] transition-colors flex items-center gap-3">
+            <i class="fas fa-receipt text-base"></i> My Orders
+        </a>
+        <a routerLink="/profile" data-drawer-hide="drawer-right"
+            class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-500 hover:text-[#c49a7a] transition-colors flex items-center gap-3">
+            <i class="fas fa-user-circle text-base"></i> Profile
+        </a>
+        }
+    </div>
+
+    <div class="mt-auto flex flex-col gap-4">
+        @if(isLogged()){
+        <div class="flex items-center gap-3 p-4 bg-neutral-50 rounded-xl border border-neutral-100 mb-2">
+            <div
+                class="w-10 h-10 rounded-full bg-linear-to-br from-[#c49a7a] to-neutral-700 flex items-center justify-center text-white text-sm font-bold shadow-sm shrink-0">
+                {{ userName().charAt(0).toUpperCase() }}
+            </div>
+            <div class="min-w-0">
+                <p class="text-sm font-bold text-neutral-900 truncate">{{ userName() }}</p>
+                <p class="text-2xs text-neutral-400 uppercase tracking-widest">Member</p>
+            </div>
+        </div>
+        <a (click)="openSignOutModal()" data-drawer-hide="drawer-right"
+            class="w-full border border-neutral-900 bg-white py-4 text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 hover:bg-[#c49a7a] hover:border-[#c49a7a] hover:text-white transition-colors text-center cursor-pointer">
+            Sign Out
+        </a>
+        }@else{
+        <a routerLink="/login" data-drawer-hide="drawer-right"
+            class="w-full border border-neutral-900 bg-white py-4 text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 hover:border-[#c49a7a] hover:text-[#c49a7a] transition-colors text-center cursor-pointer">
+            Sign In
+        </a>
+        <a routerLink="/register" data-drawer-hide="drawer-right"
+            class="w-full bg-neutral-900 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white hover:bg-[#c49a7a] hover:border-[#c49a7a] bg-neutral-900 border border-neutral-900 transition-colors text-center cursor-pointer">
+            Create Account
+        </a>
+        }
+    </div>
+</div>
+
+@if (isSignOutModalOpen) {
+<div id="signout-modal" tabindex="-1" aria-hidden="true" (click)="closeSignOutModal()"
+    class="flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full bg-neutral-900/50 backdrop-blur-sm cursor-pointer">
+    <div class="relative p-4 w-full max-w-md max-h-full cursor-default" (click)="$event.stopPropagation()">
+        <!-- Modal content -->
+        <div class="relative bg-white border border-neutral-200 shadow-2xl rounded-none">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-5 border-b border-neutral-100 rounded-none">
+                <h3 class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-900">
+                    Confirm Action
+                </h3>
+                <button type="button" (click)="closeSignOutModal()"
+                    class="text-neutral-400 cursor-pointer bg-transparent hover:text-neutral-900 text-sm w-8 h-8 ms-auto inline-flex justify-center items-center transition-transform hover:rotate-90 duration-300">
+                    <i class="fas fa-times text-lg"></i>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-6 md:p-8 text-center font-sans">
+                <i class="fas fa-sign-out-alt text-4xl text-neutral-300 mb-6"></i>
+                <h3 class="mb-8 text-base font-light text-neutral-600">Are you sure you want to sign out of your
+                    account?</h3>
+                <div class="flex items-center justify-center gap-4">
+                    <button type="button" (click)="closeSignOutModal()"
+                        class="w-full cursor-pointer py-3 px-5 text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 focus:outline-none bg-white border border-neutral-200 hover:bg-neutral-50 focus:z-10 focus:ring-0 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="button" (click)="confirmSignOut()"
+                        class="w-full cursor-pointer py-3 px-5 text-xs font-bold uppercase tracking-[0.2em] text-white bg-neutral-900 border border-neutral-900 transition-colors focus:ring-0 focus:outline-none hover:bg-[#c49a7a] hover:border-[#c49a7a] focus:z-10">
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+}

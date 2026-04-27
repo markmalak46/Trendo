@@ -1,0 +1,99 @@
+<!-- Wishlist Page — High-Fashion Minimalist -->
+<section class="min-h-[calc(100vh-80px)] bg-white text-neutral-900 font-sans pb-24">
+  <div class="mx-auto max-w-300 px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+
+    <!-- Header -->
+    <div class="mb-12 border-b border-neutral-100 pb-8 flex items-end justify-between">
+      <div>
+        <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-neutral-400 mb-2">Saved Items</h2>
+        <h1 class="text-3xl sm:text-4xl font-light text-neutral-900 tracking-tight">Your Wishlist</h1>
+      </div>
+      @if (!isLoading()) {
+        <span class="text-xs uppercase tracking-[0.2em] text-neutral-400 font-bold">
+          {{ wishlistItems().length }} {{ wishlistItems().length === 1 ? 'Item' : 'Items' }}
+        </span>
+      }
+    </div>
+
+    @if (isLoading()) {
+      <!-- Skeleton List -->
+      <div class="space-y-4">
+        @for (item of [1,2,3]; track $index) {
+          <div class="h-40 bg-neutral-50 border border-neutral-100 animate-pulse"></div>
+        }
+      </div>
+    } @else if (wishlistItems().length === 0) {
+      <!-- Empty State -->
+      <div class="flex flex-col items-center justify-center py-20 text-center border border-neutral-100 bg-neutral-50/30">
+        <div class="w-16 h-16 border border-neutral-200 flex items-center justify-center mb-6">
+          <i class="far fa-heart text-2xl text-neutral-200"></i>
+        </div>
+        <h2 class="text-xl font-light text-neutral-900 mb-2">Your wishlist is empty</h2>
+        <p class="text-xs text-neutral-400 mb-8 uppercase tracking-widest">Save your favorite pieces here for later.</p>
+        <a routerLink="/shop"
+          class="bg-neutral-900 text-white text-xs font-bold uppercase tracking-[0.2em] px-10 py-4 hover:bg-[#c49a7a] transition-colors duration-300 cursor-pointer">
+          Continue Shopping
+        </a>
+      </div>
+    } @else {
+      <!-- Wishlist Items -->
+      <div class="grid grid-cols-1 gap-px bg-neutral-200 border border-neutral-200">
+        @for (item of wishlistItems(); track item._id) {
+          <div class="bg-white p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-8 group">
+            
+            <!-- Image -->
+            <div class="w-40 h-40 bg-neutral-50 shrink-0 flex items-center justify-center p-4 relative overflow-hidden"
+              [routerLink]="['/details', item._id, item.slug]">
+              <img [src]="item.imageCover" [alt]="item.title"
+                class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700" />
+            </div>
+
+            <!-- Details -->
+            <div class="grow text-center sm:text-left">
+              @if (item.brand) {
+                <p class="text-[9px] font-black tracking-[0.3em] uppercase text-neutral-400 mb-2">{{ item.brand.name }}</p>
+              }
+              <h3 [routerLink]="['/details', item._id, item.slug]"
+                class="text-sm sm:text-base font-light text-neutral-900 hover:text-[#c49a7a] transition-colors cursor-pointer mb-2">
+                {{ item.title }}
+              </h3>
+              <p class="text-[9px] font-bold uppercase tracking-[0.15em] text-neutral-400 mb-4">{{ item.category.name }}</p>
+              
+              <div class="flex items-center justify-center sm:justify-start gap-4">
+                <span class="text-base font-bold tracking-tight text-neutral-900">{{ item.price | currency:'GBP' }}</span>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-col sm:flex-row items-stretch gap-2 w-full sm:w-auto">
+              <button (click)="addToCart(item._id)"
+                class="bg-neutral-900 text-white text-xs font-black uppercase tracking-[0.2em] px-8 py-4 flex items-center justify-center gap-2 hover:bg-[#c49a7a] transition-colors duration-300 cursor-pointer"
+                [disabled]="addedToCart().has(item._id)">
+                @if (addedToCart().has(item._id)) {
+                  Added <i class="fas fa-check text-[9px]"></i>
+                } @else {
+                  Add to Bag
+                }
+              </button>
+              <button (click)="removeFromWishlist(item._id)"
+                class="border border-neutral-200 text-neutral-400 text-xs font-bold uppercase tracking-[0.15em] px-8 py-4 hover:border-red-200 hover:text-red-500 hover:bg-red-50/30 transition-all cursor-pointer">
+                Remove
+              </button>
+            </div>
+
+          </div>
+        }
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="mt-12 flex justify-end">
+        <a routerLink="/shop"
+          class="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-all group">
+          <i class="fas fa-arrow-left text-[9px] group-hover:-translate-x-1 transition-transform"></i>
+          Back to Collections
+        </a>
+      </div>
+    }
+
+  </div>
+</section>

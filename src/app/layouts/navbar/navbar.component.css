@@ -1,0 +1,7 @@
+.active {
+    color: #c49a7a !important;
+}
+
+.active span {
+    width: 100% !important;
+}

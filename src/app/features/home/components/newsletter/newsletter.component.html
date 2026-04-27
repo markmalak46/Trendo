@@ -1,0 +1,128 @@
+<!-- Newsletter & App Download Section -->
+<section class="bg-white border-t border-neutral-100 py-16 px-4 sm:px-6 lg:px-8 font-sans">
+  <div class="mx-auto max-w-350">
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 border border-neutral-100">
+
+      <div class="p-10 sm:p-14 border-b border-neutral-100 lg:border-b-0 lg:border-r lg:border-neutral-100">
+
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-8 h-8 border border-neutral-200 flex items-center justify-center">
+            <i class="fas fa-envelope text-xs text-neutral-400"></i>
+          </div>
+          <div>
+            <p class="text-[9px] font-black uppercase tracking-[0.3em] text-neutral-900">Newsletter</p>
+            <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400">50,000+ subscribers</p>
+          </div>
+        </div>
+
+        <h2 class="text-2xl sm:text-3xl font-light text-neutral-900 tracking-tight mb-3 leading-snug">
+          Get the Freshest Updates <span class="text-[#c49a7a]">Delivered Free</span>
+        </h2>
+        <p class="text-sm font-light text-neutral-500 mb-8">Weekly offers, seasonal picks &amp; exclusive member perks.</p>
+
+        <div class="flex flex-wrap gap-2 mb-8">
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 border border-neutral-100 bg-neutral-50 text-2xs font-bold uppercase tracking-[0.15em] text-neutral-600">
+            <i class="fas fa-tag text-[#c49a7a]"></i> Exclusive Deals
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 border border-neutral-100 bg-neutral-50 text-2xs font-bold uppercase tracking-[0.15em] text-neutral-600">
+            <i class="fas fa-truck text-[#c49a7a]"></i> Free Delivery Codes
+          </span>
+          <span class="inline-flex items-center gap-2 px-3 py-1.5 border border-neutral-100 bg-neutral-50 text-2xs font-bold uppercase tracking-[0.15em] text-neutral-600">
+            <i class="fas fa-star text-[#c49a7a]"></i> Members-Only Perks
+          </span>
+        </div>
+
+        <!-- Form or Success -->
+        @if (subscribed()) {
+          <div class="flex items-center gap-3 py-4 border-l-2 border-[#c49a7a] pl-5 bg-neutral-50">
+            <i class="fas fa-check text-[#c49a7a]"></i>
+            <p class="text-sm font-light text-neutral-700">You're subscribed! Check your inbox soon.</p>
+          </div>
+        } @else {
+          <div class="flex flex-col sm:flex-row items-stretch gap-0">
+            <input
+              type="email"
+              [(ngModel)]="email"
+              placeholder="you@example.com"
+              class="flex-grow border border-neutral-200 bg-white px-5 py-3.5 text-sm font-light text-neutral-900 placeholder:text-neutral-400 focus:outline-none focus:border-neutral-900 transition-colors"
+            />
+            <button
+              (click)="subscribe()"
+              class="bg-neutral-900 text-white text-2xs font-black uppercase tracking-[0.2em] px-8 py-3.5 hover:bg-[#c49a7a] transition-colors duration-300 flex items-center justify-center gap-2 whitespace-nowrap group cursor-pointer">
+              Subscribe
+              <i class="fas fa-arrow-right opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"></i>
+            </button>
+          </div>
+          @if (error()) {
+            <p class="mt-2 text-2xs text-red-500 font-bold uppercase tracking-widest">{{ error() }}</p>
+          }
+          <p class="mt-3 text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-300">
+            <i class="fas fa-lock mr-1"></i> Unsubscribe anytime. No spam, ever.
+          </p>
+        }
+
+      </div>
+
+      <!-- Right: Mobile App -->
+      <div class="p-10 sm:p-14 bg-neutral-900 relative overflow-hidden">
+
+        <!-- Subtle texture pattern -->
+        <div class="absolute inset-0 opacity-5" style="background-image: repeating-linear-gradient(45deg, #fff 0, #fff 1px, transparent 0, transparent 50%); background-size: 12px 12px;"></div>
+
+        <!-- Label -->
+        <div class="relative z-10 mb-6">
+          <span class="inline-flex items-center gap-2 px-3 py-1 border border-neutral-700 text-[9px] font-black uppercase tracking-[0.3em] text-neutral-400">
+            <i class="fas fa-mobile-screen-button text-[#c49a7a]"></i> Mobile App
+          </span>
+        </div>
+
+        <!-- Heading -->
+        <h2 class="relative z-10 text-2xl sm:text-3xl font-light text-white tracking-tight mb-3 leading-snug">
+          Shop Faster <span class="text-[#c49a7a]">on Our App</span>
+        </h2>
+        <p class="relative z-10 text-sm font-light text-neutral-400 mb-10">
+          Get app-exclusive deals &amp; <span class="text-[#c49a7a] font-bold">15% off</span> your first order.
+        </p>
+
+        <!-- Store Buttons -->
+        <div class="relative z-10 flex flex-col gap-3">
+
+          <a href="#" class="group flex items-center gap-4 border border-neutral-700 bg-neutral-800/50 px-5 py-4 hover:border-[#c49a7a] hover:bg-neutral-800 transition-all duration-300">
+            <i class="fab fa-apple text-2xl text-white group-hover:text-[#c49a7a] transition-colors"></i>
+            <div>
+              <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-500">Download on the</p>
+              <p class="text-sm font-light text-white tracking-wide">App Store</p>
+            </div>
+            <i class="fas fa-arrow-right text-xs text-neutral-600 ml-auto group-hover:text-[#c49a7a] group-hover:translate-x-1 transition-all"></i>
+          </a>
+
+          <a href="#" class="group flex items-center gap-4 border border-neutral-700 bg-neutral-800/50 px-5 py-4 hover:border-[#c49a7a] hover:bg-neutral-800 transition-all duration-300">
+            <i class="fab fa-google-play text-2xl text-white group-hover:text-[#c49a7a] transition-colors"></i>
+            <div>
+              <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-500">Get it on</p>
+              <p class="text-sm font-light text-white tracking-wide">Google Play</p>
+            </div>
+            <i class="fas fa-arrow-right text-xs text-neutral-600 ml-auto group-hover:text-[#c49a7a] group-hover:translate-x-1 transition-all"></i>
+          </a>
+
+        </div>
+
+        <!-- Rating -->
+        <div class="relative z-10 mt-8 flex items-center gap-3">
+          <div class="flex items-center gap-0.5">
+            <i class="fas fa-star text-[#c49a7a] text-xs"></i>
+            <i class="fas fa-star text-[#c49a7a] text-xs"></i>
+            <i class="fas fa-star text-[#c49a7a] text-xs"></i>
+            <i class="fas fa-star text-[#c49a7a] text-xs"></i>
+            <i class="fas fa-star-half-stroke text-[#c49a7a] text-xs"></i>
+          </div>
+          <p class="text-2xs font-bold uppercase tracking-[0.15em] text-neutral-500">4.9 · 100K+ Downloads</p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>

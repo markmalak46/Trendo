@@ -1,0 +1,155 @@
+<!-- Elegant Responsive Category Marquee -->
+<section class="py-12 lg:py-20 bg-white border-t border-neutral-100 font-sans overflow-hidden">
+  <div class="px-4 sm:px-6 lg:px-8 max-w-350 mx-auto mb-10">
+    <div class="flex items-end justify-between">
+      <div>
+        <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-neutral-400 mb-2">Explore By</h2>
+        <h3 class="text-3xl sm:text-4xl font-light text-neutral-900 tracking-tight">Categories</h3>
+      </div>
+      <a routerLink="/categories"
+        class="text-xs font-bold uppercase tracking-widest text-neutral-900 hover:text-[#c49a7a] transition-colors border-b border-neutral-900 hover:border-[#c49a7a] pb-1">View
+        All</a>
+    </div>
+  </div>
+
+  @if (isLoading()) {
+  <div class="flex gap-px bg-neutral-200 border-y border-neutral-200 w-full overflow-hidden">
+    @for (item of [1,2,3,4,5,6,7,8]; track $index) {
+    <div class="w-45 sm:w-55 lg:w-65 aspect-4/5 bg-neutral-50 animate-pulse shrink-0"></div>
+    }
+  </div>
+  } @else {
+  <div class="relative w-full no-scrollbar bg-neutral-200 border-y border-neutral-200">
+    <div class="animate-carousel w-max flex gap-px bg-neutral-200">
+
+      <!-- Original Set -->
+      <div class="inline-flex gap-px pr-px">
+        @for (cat of categoryList(); track cat._id) {
+        <a [routerLink]="['/categories', cat.slug]"
+          class="group relative w-45 sm:w-55 lg:w-65 aspect-4/5 bg-white flex flex-col items-center p-6 cursor-pointer hover:bg-neutral-50 transition-colors duration-500">
+
+          <div class="w-full grow relative mb-6">
+            <img [src]="cat.image" [alt]="cat.name"
+              class="absolute inset-0 w-full h-full object-contain filter group-hover:scale-[1.03] transition-transform duration-700 mix-blend-multiply" />
+          </div>
+
+          <div class="flex flex-col items-center w-full mt-auto">
+            <h4
+              class="text-neutral-900 text-xs sm:text-xs font-bold tracking-[0.2em] uppercase text-center group-hover:text-[#c49a7a] transition-colors line-clamp-2 leading-relaxed">
+              {{ cat.name }}</h4>
+            <span
+              class="w-6 h-px bg-neutral-900 group-hover:bg-[#c49a7a] mt-4 group-hover:w-12 transition-all duration-500"></span>
+          </div>
+
+        </a>
+        }
+      </div>
+
+      <!-- Duplicate Set -->
+      <div class="inline-flex gap-px pr-px" aria-hidden="true">
+        @for (cat of categoryList(); track cat._id) {
+        <a [routerLink]="['/categories', cat.slug]" tabindex="-1"
+          class="group relative w-45 sm:w-55 lg:w-65 aspect-4/5 bg-white flex flex-col items-center p-6 cursor-pointer hover:bg-neutral-50 transition-colors duration-500">
+
+          <div class="w-full grow relative mb-6">
+            <img [src]="cat.image" [alt]="cat.name"
+              class="absolute inset-0 w-full h-full object-contain filter group-hover:scale-[1.03] transition-transform duration-700 mix-blend-multiply" />
+          </div>
+
+          <div class="flex flex-col items-center w-full mt-auto">
+            <h4
+              class="text-neutral-900 text-xs sm:text-xs font-bold tracking-[0.2em] uppercase text-center group-hover:text-[#c49a7a] transition-colors line-clamp-2 leading-relaxed">
+              {{ cat.name }}</h4>
+            <span
+              class="w-6 h-px bg-neutral-900 group-hover:bg-[#c49a7a] mt-4 group-hover:w-12 transition-all duration-500"></span>
+          </div>
+
+        </a>
+        }
+      </div>
+
+    </div>
+  </div>
+  }
+</section>
+
+
+<div class="grid md:grid-cols-2 gap-px bg-neutral-200 border-t border-neutral-200 font-sans mt-0">
+
+  <!-- Banner 1 -->
+  <div
+    class="relative bg-white p-12 lg:p-16 xl:p-20 group overflow-hidden cursor-pointer flex flex-col justify-center min-h-75">
+    <div
+      class="absolute inset-0 bg-neutral-900 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out z-0">
+    </div>
+
+    <div class="relative z-10 flex flex-col h-full items-start">
+      <div
+        class="inline-block border border-neutral-900 group-hover:border-[#c49a7a] px-3 py-1 mb-6 transition-colors duration-700">
+        <span
+          class="text-[9px] uppercase tracking-[0.2em] font-bold text-neutral-900 group-hover:text-[#c49a7a] transition-colors duration-700">Deal
+          of the Day</span>
+      </div>
+
+      <h2
+        class="text-3xl lg:text-4xl font-light text-neutral-900 tracking-tight mb-4 group-hover:text-white transition-colors duration-700">
+        Fresh Organic Fruits</h2>
+      <p
+        class="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-8 group-hover:text-neutral-400 transition-colors duration-700">
+        Get up to 40% off on selected items</p>
+
+      <div class="mt-auto flex flex-col items-start w-full">
+        <div class="flex items-center gap-4 mb-6">
+          <span class="text-2xl font-black text-neutral-900 group-hover:text-white transition-colors duration-700">40%
+            OFF</span>
+          <span class="text-[9px] uppercase tracking-widest text-neutral-400">Code: <br><strong
+              class="text-neutral-900 group-hover:text-white transition-colors duration-700">ORGANIC40</strong></span>
+        </div>
+
+        <a href="#"
+          class="inline-flex items-center gap-3 border-b border-neutral-900 group-hover:border-[#c49a7a] pb-1 text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 group-hover:text-[#c49a7a] transition-all duration-700 hover:pr-4">
+          Shop Collection <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Banner 2 -->
+  <div
+    class="relative bg-white p-12 lg:p-16 xl:p-20 group overflow-hidden cursor-pointer flex flex-col justify-center min-h-75">
+    <div
+      class="absolute inset-0 bg-neutral-900 translate-y-full group-hover:translate-y-0 transition-transform duration-700 ease-in-out z-0">
+    </div>
+
+    <div class="relative z-10 flex flex-col h-full items-start">
+      <div
+        class="inline-block border border-neutral-900 group-hover:border-[#c49a7a] px-3 py-1 mb-6 transition-colors duration-700">
+        <span
+          class="text-[9px] uppercase tracking-[0.2em] font-bold text-neutral-900 group-hover:text-[#c49a7a] transition-colors duration-700">New
+          Arrivals</span>
+      </div>
+
+      <h2
+        class="text-3xl lg:text-4xl font-light text-neutral-900 tracking-tight mb-4 group-hover:text-white transition-colors duration-700">
+        Exotic Collections</h2>
+      <p
+        class="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-8 group-hover:text-neutral-400 transition-colors duration-700">
+        Discover our latest premium selections</p>
+
+      <div class="mt-auto flex flex-col items-start w-full">
+        <div class="flex items-center gap-4 mb-6">
+          <span class="text-2xl font-black text-neutral-900 group-hover:text-white transition-colors duration-700">25%
+            OFF</span>
+          <span class="text-[9px] uppercase tracking-widest text-neutral-400">Code: <br><strong
+              class="text-neutral-900 group-hover:text-white transition-colors duration-700">FRESH25</strong></span>
+        </div>
+
+        <a href="#"
+          class="inline-flex items-center gap-3 border-b border-neutral-900 group-hover:border-[#c49a7a] pb-1 text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 group-hover:text-[#c49a7a] transition-all duration-700 hover:pr-4">
+          Explore Now <i class="fa-solid fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>

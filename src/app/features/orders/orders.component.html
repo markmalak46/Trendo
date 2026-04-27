@@ -1,0 +1,232 @@
+<!-- Elegant Minimalist Orders Page -->
+<section class="py-12 lg:py-20 bg-white font-sans min-h-screen">
+    <div class="px-4 sm:px-6 lg:px-8 max-w-300 mx-auto">
+
+        <!-- Header -->
+        <div
+            class="mb-12 border-b border-neutral-100 pb-8 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+            <div>
+                <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-neutral-400 mb-2">Account</h2>
+                <h1 class="text-3xl sm:text-4xl font-light text-neutral-900 tracking-tight">My Orders</h1>
+            </div>
+            @if (!isLoading() && ordersList().length > 0) {
+            <span class="text-xs uppercase tracking-[0.2em] text-neutral-400 font-bold">
+                {{ ordersList().length }} order{{ ordersList().length > 1 ? 's' : '' }} placed
+            </span>
+            }
+        </div>
+
+        <!-- Loading Skeleton -->
+        @if (isLoading()) {
+        <div class="space-y-4">
+            @for (item of [1,2,3]; track $index) {
+            <div class="border border-neutral-100 p-8 space-y-4">
+                <div class="flex justify-between">
+                    <div class="space-y-2">
+                        <div class="h-2 bg-neutral-100 w-24 animate-pulse"></div>
+                        <div class="h-3 bg-neutral-200 w-40 animate-pulse"></div>
+                    </div>
+                    <div class="h-6 bg-neutral-100 w-20 animate-pulse"></div>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <div class="w-14 h-14 bg-neutral-100 animate-pulse"></div>
+                    <div class="w-14 h-14 bg-neutral-100 animate-pulse"></div>
+                    <div class="w-14 h-14 bg-neutral-100 animate-pulse"></div>
+                </div>
+            </div>
+            }
+        </div>
+
+        <!-- Empty State -->
+        } @else if (ordersList().length === 0) {
+        <div
+            class="flex flex-col items-center justify-center min-h-[50vh] text-center border border-dashed border-neutral-200 p-12 bg-neutral-50/30">
+            <i class="fa-solid fa-box-open text-5xl text-neutral-200 mb-8"></i>
+            <h2 class="text-2xl font-light text-neutral-900 mb-3">No orders yet</h2>
+            <p class="text-sm text-neutral-400 mb-10 font-light">When you place an order, it will appear here.</p>
+            <a routerLink="/shop"
+                class="border border-neutral-900 bg-neutral-900 text-white px-10 py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-transparent hover:text-neutral-900 transition-colors">
+                Start Shopping
+            </a>
+        </div>
+
+        <!-- Orders List -->
+        } @else {
+        <div class="space-y-4">
+            @for (order of ordersList(); track order._id) {
+            <div
+                class="border border-neutral-100 hover:border-neutral-200 transition-colors duration-300 overflow-hidden">
+
+                <!-- Order Header (Clickable) -->
+                <div (click)="toggleOrder(order._id)"
+                    class="p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer group">
+
+                    <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-10">
+                        <!-- Order Number -->
+                        <div>
+                            <p class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-1">Order #{{ order.id }}
+                            </p>
+                            <p class="text-xs text-neutral-500">{{ order.createdAt | date:'dd MMM yyyy, h:mm a' }}</p>
+                        </div>
+
+                        <!-- Divider -->
+                        <div class="hidden sm:block w-px h-8 bg-neutral-100"></div>
+
+                        <!-- Items preview -->
+                        <div class="flex items-center gap-2">
+                            @for (item of order.cartItems.slice(0, 3); track item._id) {
+                            <div
+                                class="w-12 h-12 bg-neutral-50 flex items-center justify-center overflow-hidden border border-neutral-100">
+                                <img [src]="item.product.imageCover" [alt]="item.product.title"
+                                    class="w-full h-full object-contain mix-blend-multiply" />
+                            </div>
+                            }
+                            @if (order.cartItems.length > 3) {
+                            <div
+                                class="w-12 h-12 bg-neutral-50 border border-neutral-100 flex items-center justify-center">
+                                <span class="text-[9px] font-bold text-neutral-500">+{{ order.cartItems.length - 3
+                                    }}</span>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-6">
+                        <!-- Total -->
+                        <div class="text-right">
+                            <p class="text-[9px] uppercase tracking-widest text-neutral-400 mb-1">Total</p>
+                            <p class="text-lg font-light text-neutral-900">{{ order.totalOrderPrice |
+                                currency:'EGP':'symbol':'1.0-0' }}</p>
+                        </div>
+
+                        <!-- Status Badges -->
+                        <div class="flex flex-col gap-1.5 items-end">
+                            @if (order.isPaid) {
+                            <span
+                                class="text-[8px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-100">
+                                Paid
+                            </span>
+                            } @else {
+                            <span
+                                class="text-[8px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-100">
+                                Unpaid
+                            </span>
+                            }
+                            @if (order.isDelivered) {
+                            <span
+                                class="text-[8px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-100">
+                                Delivered
+                            </span>
+                            } @else {
+                            <span
+                                class="text-[8px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 bg-neutral-50 text-neutral-500 border border-neutral-100">
+                                Processing
+                            </span>
+                            }
+                        </div>
+
+                        <!-- Expand Arrow -->
+                        <i class="fa-solid fa-chevron-down text-xs text-neutral-400 transition-transform duration-500"
+                            [class.rotate-180]="expandedOrderId() === order._id"></i>
+                    </div>
+                </div>
+
+                <!-- Expandable Details -->
+                @if (expandedOrderId() === order._id) {
+                <div class="border-t border-neutral-100 bg-neutral-50/40 p-6 sm:p-8 space-y-8">
+
+                    <!-- Items List -->
+                    <div>
+                        <h4 class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-4 font-bold">Items</h4>
+                        <div class="space-y-3">
+                            @for (item of order.cartItems; track item._id) {
+                            <div class="flex items-center gap-5 p-4 bg-white border border-neutral-100">
+                                <div
+                                    class="w-16 h-16 bg-neutral-50 shrink-0 flex items-center justify-center overflow-hidden border border-neutral-50">
+                                    <img [src]="item.product.imageCover" [alt]="item.product.title"
+                                        class="w-full h-full object-contain mix-blend-multiply" />
+                                </div>
+                                <div class="grow min-w-0">
+                                    <p class="text-[9px] uppercase tracking-widest text-neutral-400 mb-0.5">{{
+                                        item.product.brand.name }}</p>
+                                    <p class="text-sm font-light text-neutral-900 truncate">{{ item.product.title }}</p>
+                                    <p class="text-[9px] uppercase tracking-widest text-neutral-400 mt-0.5">Qty: {{
+                                        item.count }}</p>
+                                </div>
+                                <p class="text-sm font-light text-neutral-900 flex-shrink-0">{{ item.price |
+                                    currency:'EGP':'symbol':'1.0-0' }}</p>
+                            </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Order Meta: 3-column grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-neutral-100 pt-6">
+
+                        <!-- Shipping Address -->
+                        <div>
+                            <h4 class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-3 font-bold">Shipping
+                                Address</h4>
+                            <p class="text-sm font-light text-neutral-700">{{ order.shippingAddress.city }}</p>
+                            <p class="text-xs text-neutral-500 mt-1">{{ order.shippingAddress.details }}</p>
+                            <p class="text-xs text-neutral-500 mt-0.5">{{ order.shippingAddress.phone }}</p>
+                        </div>
+
+                        <!-- Payment -->
+                        <div>
+                            <h4 class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-3 font-bold">Payment
+                            </h4>
+                            <div class="flex items-center gap-2">
+                                @if (order.paymentMethodType === 'cash') {
+                                <i class="fas fa-money-bill-wave text-neutral-400 text-xs"></i>
+                                <span class="text-sm font-light text-neutral-700">Cash on Delivery</span>
+                                } @else {
+                                <i class="fas fa-credit-card text-neutral-400 text-xs"></i>
+                                <span class="text-sm font-light text-neutral-700">Online Payment</span>
+                                }
+                            </div>
+                            @if (order.paidAt) {
+                            <p class="text-[9px] text-neutral-400 mt-1">Paid on {{ order.paidAt | date:'dd MMM yyyy' }}
+                            </p>
+                            }
+                        </div>
+
+                        <!-- Order Total -->
+                        <div>
+                            <h4 class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-3 font-bold">Summary
+                            </h4>
+                            <div class="space-y-1.5 text-xs text-neutral-500">
+                                <div class="flex justify-between">
+                                    <span>Items ({{ order.cartItems.length }})</span>
+                                    <span>{{ order.totalOrderPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Shipping</span>
+                                    <span class="text-emerald-600">Free</span>
+                                </div>
+                                <div
+                                    class="flex justify-between text-neutral-900 font-bold pt-1 border-t border-neutral-100 mt-1">
+                                    <span>Total</span>
+                                    <span>{{ order.totalOrderPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+            }
+        </div>
+        }
+
+        <!-- Bottom Aesthetic -->
+        <div class="mt-20 flex justify-center">
+            <div class="flex items-center gap-8">
+                <span class="w-16 h-px bg-neutral-100"></span>
+                <span class="text-[9px] font-bold text-neutral-300 uppercase tracking-[0.5em]">Thank you for shopping
+                    with us</span>
+                <span class="w-16 h-px bg-neutral-100"></span>
+            </div>
+        </div>
+    </div>
+</section>

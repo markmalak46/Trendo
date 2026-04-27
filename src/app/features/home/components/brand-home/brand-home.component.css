@@ -1,0 +1,23 @@
+/* Reverse-direction marquee for brands */
+@keyframes scrolling-reverse {
+  0%   { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-carousel-reverse {
+  animation: scrolling-reverse 70s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+.animate-carousel-reverse:hover {
+  animation-play-state: paused;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

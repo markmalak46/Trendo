@@ -1,0 +1,312 @@
+<!-- Elegant Minimalist Theme -->
+<section class="min-h-[calc(100vh-80px)] bg-white text-neutral-900 selection:bg-neutral-900 selection:text-white pb-24">
+  
+  <div class="mx-auto max-w-300 px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+    
+    @if (isLoading()) {
+      <div class="flex flex-col items-center justify-center min-h-[50vh]">
+        <div class="w-8 h-8 border-2 border-neutral-100 border-t-neutral-900 rounded-full animate-spin mb-6"></div>
+        <p class="text-xs tracking-[0.3em] uppercase text-neutral-400 font-bold">Initializing</p>
+      </div>
+    } @else if (productDetails(); as product) {
+      
+      <!-- Minimal Breadcrumb -->
+      <nav class="border-b border-neutral-100 pb-6 mb-10 flex items-center justify-between">
+        <div class="flex items-center gap-3 text-xs sm:text-xs tracking-[0.15em] uppercase font-bold text-neutral-400">
+           <a routerLink="/" class="hover:text-neutral-900 transition-colors">Home</a>
+           <span class="text-neutral-300">/</span>
+           @if (product.category) {
+             <a routerLink="/categories" class="hover:text-neutral-900 transition-colors">{{product.category.name}}</a>
+             <span class="text-neutral-300">/</span>
+           }
+           <span class="text-neutral-900 line-clamp-1 max-w-37.5 sm:max-w-xs">{{product.title}}</span>
+        </div>
+        
+        <button (click)="toggleWishlist(product._id)"
+          class="hover:scale-110 cursor-pointer transition-all flex items-center gap-2 text-xs tracking-widest uppercase font-bold"
+          [class.text-red-500]="wishlistIds().has(product._id)"
+          [class.text-neutral-400]="!wishlistIds().has(product._id)">
+          <span class="hidden sm:inline">{{ wishlistIds().has(product._id) ? 'Saved' : 'Save' }}</span>
+          <i class="fa-heart text-base" 
+            [class.fas]="wishlistIds().has(product._id)" 
+            [class.far]="!wishlistIds().has(product._id)"></i>
+        </button>
+      </nav>
+
+      <div class="flex flex-col lg:flex-row gap-12 lg:gap-24 mb-20">
+        
+        <!-- Left: Image Gallery (Clean, flat, bordered) -->
+        <div class="w-full lg:w-1/2">
+           <div class="bg-neutral-50/50 aspect-4/5 w-full flex items-center justify-center relative overflow-hidden group border border-neutral-100 p-8 sm:p-14">
+             @if (product.images && product.images.length > 0) {
+                <img [src]="product.images[activeImageIndex()]" [alt]="product.title" class="w-full h-full object-contain mix-blend-multiply transition-opacity duration-700 hover:scale-[1.02]" />
+             } @else {
+                <img [src]="product.imageCover" [alt]="product.title" class="w-full h-full object-contain mix-blend-multiply transition-opacity duration-700 hover:scale-[1.02]" />
+             }
+             
+             <!-- Subtle Tag -->
+             @if(product.brand) {
+               <div class="absolute top-6 left-6 text-xs font-black tracking-[0.2em] uppercase text-neutral-900 bg-white px-4 py-2 shadow-[0_2px_10px_rgba(0,0,0,0.03)] border border-neutral-100">
+                 {{product.brand.name}}
+               </div>
+             }
+           </div>
+
+           <!-- Thumbnails: Minimal squares -->
+           @if (product.images && product.images.length > 1) {
+             <div class="grid grid-cols-4 sm:grid-cols-5 gap-3 sm:gap-4 mt-4">
+                @for (img of product.images; track $index) {
+                  <button (click)="changeImage($index)" 
+                          class="aspect-square bg-neutral-50/50 flex items-center justify-center transition-all duration-300 border p-2 sm:p-3"
+                          [class.border-neutral-900]="activeImageIndex() === $index"
+                          [class.border-neutral-100]="activeImageIndex() !== $index"
+                          [class.opacity-100]="activeImageIndex() === $index"
+                          [class.opacity-50]="activeImageIndex() !== $index"
+                          [class.hover:opacity-100]="activeImageIndex() !== $index">
+                    <img [src]="img" [alt]="'Thumbnail ' + $index" class="w-full h-full object-contain mix-blend-multiply" />
+                  </button>
+                }
+             </div>
+           }
+        </div>
+
+        <!-- Right: Product Information (Typography-led) -->
+        <div class="w-full lg:w-1/2 flex flex-col justify-start pt-2 xl:pt-8 relative">
+           
+           <div class="mb-10">
+              @if (product.subcategory && product.subcategory.length > 0) {
+                <p class="text-xs font-bold tracking-[0.2em] uppercase text-neutral-400 mb-4">{{product.subcategory[0].name}}</p>
+              }
+              <h1 class="text-3xl sm:text-4xl lg:text-5xl font-light text-neutral-900 mb-6 leading-tight">{{product.title}}</h1>
+              
+              <div class="flex flex-wrap items-center gap-4 text-xs sm:text-sm mb-10 pb-10 border-b border-neutral-100">
+                <div class="flex gap-1 text-neutral-900">
+                   @for(i of [1,2,3,4,5]; track $index) {
+                      <i class="fas fa-star" [class.text-[#c49a7a]]="product.ratingsAverage >= i" [class.text-neutral-100]="product.ratingsAverage < i"></i>
+                   }
+                   <span class="ml-2 font-medium">{{product.ratingsAverage || 0}}</span>
+                </div>
+                <span class="w-1 h-1 bg-neutral-300 rounded-full hidden sm:block"></span>
+                <a href="#reviews" class="text-neutral-500 underline decoration-neutral-200 underline-offset-4 hover:text-[#c49a7a] transition-colors">{{product.ratingsQuantity || 0}} Reviews</a>
+                <span class="w-1 h-1 bg-neutral-300 rounded-full hidden sm:block"></span>
+                <span class="text-neutral-500 font-medium tracking-wide uppercase text-xs">{{product.sold || 0}} Sold</span>
+              </div>
+
+              <div class="flex items-end gap-4 mb-4">
+                <span class="text-4xl font-normal tracking-tight text-neutral-900">{{product.price | currency:'GBP'}}</span>
+                <span class="text-xl text-neutral-400 line-through mb-1">{{product.price * 1.25 | currency:'GBP'}}</span>
+              </div>
+              <p class="text-xs uppercase tracking-widest text-[#c49a7a] font-bold mb-8">Taxes included. Free Local Shipping.</p>
+           </div>
+
+           <!-- Minimal Description -->
+           <div class="mb-12 relative">
+              <h3 class="text-xs font-bold uppercase tracking-widest text-neutral-900 mb-4 pb-4 border-b border-neutral-100">Details</h3>
+              <p class="text-neutral-500 leading-[1.8] text-sm sm:text-base font-light whitespace-pre-line">{{product.description}}</p>
+           </div>
+
+           <!-- Action Area -->
+           <div class="mt-auto">
+              <ul class="space-y-4 mb-10 text-xs sm:text-sm text-neutral-500 font-medium">
+                 <li class="flex items-center gap-4">
+                   <div class="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center shrink-0">
+                     <i class="fas fa-boxes text-neutral-900"></i>
+                   </div>
+                   <span>In Stock  (<span class="text-neutral-900">{{product.quantity}}</span> units ready to dispatch)</span>
+                 </li>
+                 <li class="flex items-center gap-4">
+                   <div class="w-8 h-8 rounded-full bg-neutral-50 flex items-center justify-center shrink-0">
+                     <i class="fas fa-plane-departure text-neutral-900"></i>
+                   </div>
+                   <span>Free express global shipping on all orders</span>
+                 </li>
+              </ul>
+
+              <div class="flex flex-col sm:flex-row gap-4">
+                 <button (click)="addProductToCart(product._id)" 
+                         [class.bg-[#c49a7a]]="isAdded()"
+                         [class.hover:bg-emerald-700]="isAdded()"
+                         [class.bg-neutral-900]="!isAdded()"
+                         [class.hover:bg-[#c49a7a]]="!isAdded()"
+                         class="grow h-14 cursor-pointer text-white font-bold bg-[#c49a7a] uppercase tracking-[0.2em] text-xs transition-all flex items-center justify-center gap-4 relative overflow-hidden group shadow-lg shadow-neutral-900/20 active:scale-[0.98]">
+                    
+                         
+                    @if (isAdded()) {
+                        <span class="relative z-10 transition-transform">Added to Bag</span>
+                        <i class="fas fa-check relative z-10"></i>
+                    } @else {
+                        <span class="relative z-10 group-hover:-translate-x-5 transition-transform">Add To Bag</span>
+                        <i class="fas fa-arrow-right relative z-10 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all absolute right-8"></i>
+                    }
+                 </button>
+              </div>
+              
+              <div class="mt-6 flex justify-center sm:justify-start gap-4 text-neutral-300">
+                 <i class="fab fa-cc-visa text-2xl hover:text-neutral-900 transition-colors cursor-pointer"></i>
+                 <i class="fab fa-cc-mastercard text-2xl hover:text-neutral-900 transition-colors cursor-pointer"></i>
+                 <i class="fab fa-cc-amex text-2xl hover:text-neutral-900 transition-colors cursor-pointer"></i>
+                 <i class="fab fa-cc-paypal text-2xl hover:text-neutral-900 transition-colors cursor-pointer"></i>
+              </div>
+           </div>
+        </div>
+      </div>
+
+      <div id="reviews" class="pt-16 border-t border-neutral-100">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
+          <div>
+            <h2 class="text-xs font-black uppercase tracking-[0.3em] text-neutral-400 mb-2">Customer Feedback</h2>
+            <h3 class="text-2xl font-light text-neutral-900 tracking-tight">Verified Reviews</h3>
+          </div>
+          <div class="flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-neutral-400">
+            <span>{{ productDetails()?.ratingsAverage || 0 }} Rating</span>
+            <span class="w-1 h-1 bg-neutral-200 rounded-full"></span>
+            <span>{{ reviews().length }} Reviews</span>
+          </div>
+        </div>
+
+        <!-- Add Review Form -->
+        <div class="mb-12 p-6 sm:p-8 bg-neutral-50/50 border border-neutral-100 group">
+          <h4 class="text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 mb-6 flex items-center gap-2">
+            <i class="far fa-edit text-xs"></i> Write a Review
+          </h4>
+          
+          <div class="flex flex-col gap-6">
+            <div class="flex items-center gap-3">
+              <span class="text-xs font-bold uppercase tracking-widest text-neutral-400">Your Rating</span>
+              <div class="flex gap-1">
+                @for (i of [1,2,3,4,5]; track $index) {
+                  <button (click)="setRating(i)" class="cursor-pointer transition-transform hover:scale-110 active:scale-95">
+                    <i class="fa-star text-base" 
+                      [class.fas]="newReviewRating() >= i" 
+                      [class.far]="newReviewRating() < i"
+                      [class.text-[#c49a7a]]="newReviewRating() >= i"
+                      [class.text-neutral-200]="newReviewRating() < i"></i>
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="relative">
+              <textarea [(ngModel)]="newReviewText" placeholder="Share your thoughts on this piece..." rows="3"
+                class="w-full bg-white border border-neutral-200 p-4 text-xs sm:text-sm font-light text-neutral-900 focus:ring-0 focus:border-[#c49a7a] transition-all resize-none placeholder:text-neutral-300"></textarea>
+            </div>
+
+            <div class="flex justify-end">
+              <button (click)="submitReview()" [disabled]="isSubmittingReview()"
+                class="bg-neutral-900 text-white px-10 py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-[#c49a7a] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-3 group/btn">
+                @if (isSubmittingReview()) {
+                  Submitting... <div class="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                } @else {
+                  Post Review <i class="fas fa-paper-plane text-[8px] group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform"></i>
+                }
+              </button>
+            </div>
+          </div>
+        </div>
+
+        @if (isReviewsLoading()) {
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @for (item of [1,2]; track $index) {
+              <div class="p-6 border border-neutral-100 bg-neutral-50/30 animate-pulse space-y-3">
+                <div class="h-2 bg-neutral-200 w-1/4"></div>
+                <div class="h-3 bg-neutral-200 w-full"></div>
+              </div>
+            }
+          </div>
+        } @else if (reviews().length === 0) {
+          <div class="py-12 text-center border border-dashed border-neutral-200 bg-neutral-50/30">
+            <p class="text-xs uppercase tracking-[0.2em] font-bold text-neutral-400">No reviews yet for this product.</p>
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @for (review of (showAllReviews() ? reviews() : (reviews() | slice:0:2)); track review._id) {
+              <div class="bg-white p-6 border border-neutral-100 hover:border-[#c49a7a]/30 hover:shadow-sm transition-all duration-500 group relative">
+                
+                <div class="flex items-start justify-between mb-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 text-xs font-black uppercase border border-neutral-200">
+                      {{ review.user.name.charAt(0) }}
+                    </div>
+                    <div>
+                      <h4 class="text-[11px] font-bold text-neutral-900 tracking-wide">{{ review.user.name }}</h4>
+                      <p class="text-[8px] font-bold uppercase tracking-widest text-neutral-400">{{ review.createdAt | date:'MMM d, y' }}</p>
+                    </div>
+                  </div>
+
+                  @if (editingReviewId() !== review._id) {
+                    <div class="flex gap-0.5">
+                      @for (i of [1,2,3,4,5]; track $index) {
+                        <div class="w-1.5 h-1.5 rounded-full transition-colors duration-500"
+                          [class.bg-[#c49a7a]]="review.rating >= i"
+                          [class.bg-neutral-100]="review.rating < i"></div>
+                      }
+                    </div>
+                  }
+                </div>
+
+                @if (editingReviewId() === review._id) {
+                  <div class="space-y-4 pt-2">
+                    <div class="flex items-center gap-2">
+                      @for (i of [1,2,3,4,5]; track $index) {
+                        <button (click)="setEditRating(i)" class="cursor-pointer">
+                          <i class="fa-star text-sm" 
+                            [class.fas]="editReviewRating() >= i" 
+                            [class.far]="editReviewRating() < i"
+                            [class.text-[#c49a7a]]="editReviewRating() >= i"
+                            [class.text-neutral-200]="editReviewRating() < i"></i>
+                        </button>
+                      }
+                    </div>
+                    <textarea [(ngModel)]="editReviewText" class="w-full bg-neutral-50 border border-neutral-200 p-3 text-xs font-light text-neutral-900 focus:ring-0 focus:border-[#c49a7a] transition-all resize-none"></textarea>
+                    <div class="flex justify-end gap-2">
+                      <button (click)="cancelEdit()" class="text-xs font-bold uppercase tracking-widest text-neutral-400 hover:text-neutral-900 px-4 py-2 transition-colors">Cancel</button>
+                      <button (click)="updateReview(review._id)" [disabled]="isUpdatingReview()" class="bg-neutral-900 text-white text-xs font-bold uppercase tracking-widest px-6 py-2 hover:bg-[#c49a7a] transition-all disabled:opacity-50">Update</button>
+                    </div>
+                  </div>
+                } @else {
+                  <p class="text-neutral-500 leading-relaxed text-xs sm:text-sm font-light italic mb-4">"{{ review.review }}"</p>
+                  
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity">
+                      <i class="fas fa-check-circle text-[#c49a7a] text-[8px]"></i>
+                      <span class="text-[8px] font-bold uppercase tracking-widest text-neutral-400">Verified Purchase</span>
+                    </div>
+
+                    @if (review.user._id === currentUserId()) {
+                      <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-1 group-hover:translate-y-0">
+                        <button (click)="startEdit(review)" class="w-7 h-7 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400 hover:text-[#c49a7a] hover:bg-[#c49a7a]/5 transition-all cursor-pointer" title="Edit Review">
+                          <i class="far fa-pen-to-square text-xs"></i>
+                        </button>
+                        <button (click)="deleteReview(review._id)" class="w-7 h-7 rounded-full bg-neutral-50 flex items-center justify-center text-neutral-400 hover:text-red-500 hover:bg-red-50 transition-all cursor-pointer" title="Delete Review">
+                          <i class="far fa-trash-can text-xs"></i>
+                        </button>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+
+          @if (!showAllReviews() && reviews().length > 2) {
+            <div class="mt-8 flex justify-center">
+              <button (click)="showAllReviews.set(true)" class="border border-neutral-200 text-neutral-900 px-8 py-3 text-xs font-bold uppercase tracking-[0.2em] hover:border-[#c49a7a] hover:text-[#c49a7a] transition-all duration-300 active:scale-95 cursor-pointer flex items-center gap-2">
+                All Reviews ({{ reviews().length }})
+                <i class="fas fa-chevron-down text-[7px]"></i>
+              </button>
+            </div>
+          }
+        }
+      </div>
+
+    } @else {
+      <div class="flex flex-col items-center justify-center min-h-[50vh] text-center border border-neutral-100 p-12 bg-neutral-50/30">
+        <i class="fas fa-box-open text-3xl text-neutral-300 mb-6 font-light"></i>
+        <h2 class="text-lg font-medium text-neutral-900 mb-2 tracking-wide">Item Unavailable</h2>
+        <p class="text-neutral-500 max-w-sm mb-8 text-sm">This product may have been moved or permanently removed from our inventory catalog.</p>
+        <a routerLink="/shop" class="border border-neutral-900 bg-white text-neutral-900 px-8 py-3 text-xs font-bold uppercase tracking-[0.2em] hover:bg-neutral-900 hover:text-white transition-colors">Return to Collection</a>
+      </div>
+    }
+
+  </div>
+</section>

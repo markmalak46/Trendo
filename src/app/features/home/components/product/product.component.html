@@ -1,0 +1,121 @@
+<!-- Elegant Minimalist High-Fashion Grid -->
+<section class="py-12 lg:py-20 bg-white font-sans overflow-hidden">
+    <div class="px-4 sm:px-6 lg:px-8 max-w-350 mx-auto mb-10">
+        <div class="flex items-end justify-between">
+            <div>
+                <h2 class="text-2xs font-bold uppercase tracking-[0.3em] text-neutral-400 mb-2">Our Collection</h2>
+                <h3 class="text-3xl sm:text-4xl font-light text-neutral-900 tracking-tight">Trending Now</h3>
+            </div>
+            <a routerLink="/shop"
+                class="text-2xs font-bold uppercase tracking-widest text-neutral-900 hover:text-[#c49a7a] transition-colors border-b border-neutral-900 hover:border-[#c49a7a] pb-1">View
+                All</a>
+        </div>
+    </div>
+
+    <div
+        class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-px bg-neutral-200 border-y border-neutral-200">
+        @if (isLoading()) {
+        @for (item of [1,2,3,4,5,6,7,8,9,10]; track $index) {
+        <div class="bg-white p-6 relative flex flex-col h-full min-h-100">
+            <div
+                class="w-full aspect-4/5 bg-neutral-50 mb-6 flex items-center justify-center relative overflow-hidden">
+                <div
+                    class="absolute inset-0 bg-linear-to-r from-neutral-50 via-neutral-100 to-neutral-50 animate-pulse">
+                </div>
+                <div
+                    class="w-6 h-6 border-2 border-neutral-200 border-t-neutral-400 rounded-full animate-spin z-10">
+                </div>
+            </div>
+            <div class="space-y-4 mt-auto">
+                <div class="h-2 bg-neutral-100 w-1/3"></div>
+                <div class="h-3 bg-neutral-200 w-3/4"></div>
+                <div class="h-3 bg-neutral-200 w-1/4"></div>
+            </div>
+        </div>
+        }
+        } @else {
+        @for (product of productList(); track product._id) {
+        <div
+            class="bg-white flex flex-col group relative overflow-hidden transition-all duration-500 cursor-pointer h-full">
+
+            <!-- Image Area -->
+            <div class="relative aspect-4/5 bg-neutral-50 flex items-center justify-center p-8 transition-colors duration-700 group-hover:bg-neutral-100 overflow-hidden"
+                [routerLink]="['/details', product._id, product.slug]">
+                <img [src]="product.imageCover" [alt]="product.title"
+                    class="w-full h-full object-contain mix-blend-multiply filter transition-transform duration-1000 ease-out group-hover:scale-105" />
+
+                <!-- Category Tag -->
+                <div class="absolute top-5 left-5 z-10 transition-opacity">
+                    <span
+                        class="text-neutral-500 text-[9px] uppercase font-bold tracking-[0.2em] bg-white/80 backdrop-blur-sm px-2 py-1 border border-neutral-100">
+                        {{ product.category.name }}
+                    </span>
+                </div>
+
+                <!-- Floating Actions -->
+                <div
+                    class="absolute top-5 right-5 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500 ease-out z-20">
+                    <button (click)="toggleWishlist(product._id); $event.stopPropagation()"
+                        class="w-10 h-10 bg-white border border-neutral-100 flex items-center justify-center text-neutral-400 hover:text-[#c49a7a] hover:border-[#c49a7a] transition-all duration-300"
+                        title="Wishlist">
+                        <i class="fa-heart" [class.fas]="wishlistIds().has(product._id)" [class.far]="!wishlistIds().has(product._id)" [class.text-red-500]="wishlistIds().has(product._id)"></i>
+                    </button>
+                    <button [routerLink]="['/details', product._id, product.slug]" (click)="$event.stopPropagation()"
+                        class="w-10 h-10 bg-white border border-neutral-100 flex items-center justify-center text-neutral-400 hover:text-[#c49a7a] hover:border-[#c49a7a] transition-all duration-300"
+                        title="Quick View">
+                        <i class="far fa-eye"></i>
+                    </button>
+                </div>
+
+                <!-- Slide-up Add to Cart Button -->
+                <button (click)="addProductToCart(product._id); $event.stopPropagation()"
+                    [class.bg-emerald-700]="addedProducts().has(product._id)"
+                    [class.hover:bg-emerald-800]="addedProducts().has(product._id)"
+                    [class.bg-neutral-900]="!addedProducts().has(product._id)"
+                    [class.hover:bg-[#c49a7a]]="!addedProducts().has(product._id)"
+                    class="absolute cursor-pointer bottom-0 left-0 w-full backdrop-blur-sm text-white flex items-center justify-center gap-3 px-6 py-4 translate-y-full group-hover:translate-y-0 z-20 transition-transform duration-500 ease-in-out ">
+
+                    @if (addedProducts().has(product._id)) {
+                    <span class="text-2xs uppercase font-bold tracking-[0.2em]">Added To Cart</span>
+                    <i class="fas fa-check text-2xs"></i>
+                    } @else {
+                    <span class="text-2xs uppercase font-bold tracking-[0.2em]">Add To Bag</span>
+                    <i class="fas fa-plus text-2xs"></i>
+                    }
+                </button>
+            </div>
+
+            <!-- Content Area -->
+            <div class="p-6 flex flex-col grow relative bg-white z-10">
+
+                <h3 [routerLink]="['/details', product._id, product.slug]"
+                    class="text-xs sm:text-sm font-light text-neutral-900 group-hover:text-[#c49a7a] transition-colors line-clamp-2 mb-4 leading-relaxed grow tracking-wide">
+                    {{ product.title }}
+                </h3>
+
+                <div class="flex items-center gap-2 mb-5">
+                    <div class="flex text-[8px] gap-px">
+                        @for(i of [1,2,3,4,5]; track $index) {
+                        <i class="fas fa-star" [class.text-neutral-900]="product.ratingsAverage >= i"
+                            [class.text-neutral-200]="product.ratingsAverage < i"></i>
+                        }
+                    </div>
+                    <span class="text-[9px] font-bold text-neutral-400 tracking-widest uppercase mt-0.5">
+                        ({{ product.ratingsQuantity }})
+                    </span>
+                </div>
+
+                <div class="mt-auto flex items-end justify-between pt-3 border-t border-neutral-100">
+                    <span class="text-[9px] uppercase tracking-widest text-neutral-400 font-bold">Price</span>
+                    <span
+                        class="text-sm font-bold tracking-tight text-neutral-900 group-hover:text-[#c49a7a] transition-colors duration-500">
+                        {{ product.price | currency:'GBP' }}
+                    </span>
+                </div>
+
+            </div>
+        </div>
+        }
+        }
+    </div>
+</section>

@@ -1,0 +1,62 @@
+<!-- Elegant Minimalist Brands Grid -->
+<section class="py-12 lg:py-20 bg-white font-sans overflow-hidden min-h-screen">
+    <div class="px-4 sm:px-6 lg:px-8 max-w-[1400px] mx-auto mb-12">
+        <div class="text-center max-w-2xl mx-auto">
+            <h2 class="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-400 mb-2">Our Partners</h2>
+            <h3 class="text-3xl sm:text-4xl font-light text-neutral-900 tracking-tight">Curated Brands</h3>
+            <div class="mt-4 w-12 h-px bg-[#c49a7a] mx-auto"></div>
+            <p class="mt-6 text-xs sm:text-sm text-neutral-500 uppercase tracking-widest leading-relaxed">
+                Discover the world's most trusted brands, carefully selected for quality and style.
+            </p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-px bg-neutral-200 border-y border-neutral-200">
+        @if (isLoading()) {
+            <!-- Skeleton Loader for better perceived performance -->
+            @for (item of [1,2,3,4,5,6,7,8,9,10,11,12]; track $index) {
+                <div class="bg-white p-8 relative flex flex-col items-center justify-center h-full aspect-square">
+                    <div class="w-full h-full bg-neutral-50 flex items-center justify-center relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-neutral-50 via-neutral-100 to-neutral-50 animate-pulse"></div>
+                        <div class="w-6 h-6 border-[2px] border-neutral-200 border-t-[#c49a7a] rounded-full animate-spin z-10"></div>
+                    </div>
+                </div>
+            }
+        } @else {
+            @for (brand of brandsList(); track brand._id) {
+                <div class="bg-white flex flex-col group relative overflow-hidden transition-all duration-500 cursor-pointer h-full">
+                    <!-- Image Area -->
+                    <div class="relative aspect-square bg-neutral-50 flex items-center justify-center p-8 transition-colors duration-700 group-hover:bg-neutral-100 overflow-hidden">
+                        <img 
+                            [src]="brand.image" 
+                            [alt]="brand.name"
+                            class="w-full h-full object-contain mix-blend-multiply filter grayscale group-hover:grayscale-0 transition-all duration-1000 ease-out group-hover:scale-110" 
+                        />
+                        
+                        <!-- Decorative border on hover -->
+                        <div class="absolute inset-4 border border-[#c49a7a]/0 group-hover:border-[#c49a7a]/20 transition-all duration-700 pointer-events-none"></div>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="p-6 flex flex-col items-center justify-center bg-white z-10 border-t border-neutral-50 group-hover:border-neutral-100 transition-colors duration-500">
+                        <h3 class="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-900 group-hover:text-[#c49a7a] transition-colors duration-500">
+                            {{ brand.name }}
+                        </h3>
+                    </div>
+
+                    <!-- Subtle Bottom Accent -->
+                    <div class="absolute bottom-0 left-0 w-full h-0.5 bg-[#c49a7a] scale-x-0 group-hover:scale-x-100 transition-transform duration-700 ease-in-out"></div>
+                </div>
+            } @empty {
+                <div class="col-span-full py-20 bg-white text-center">
+                    <p class="text-[10px] uppercase tracking-widest text-neutral-400">No brands found at the moment.</p>
+                </div>
+            }
+        }
+    </div>
+
+    <!-- Optional Footer Quote -->
+    <div class="mt-20 px-4 text-center">
+        <span class="text-[9px] font-bold text-neutral-300 uppercase tracking-[0.5em]">Authenticity Guaranteed</span>
+    </div>
+</section>

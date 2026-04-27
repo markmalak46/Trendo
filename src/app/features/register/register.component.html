@@ -1,0 +1,190 @@
+<!-- Glassmorphism Centered Register -->
+<section class="min-h-screen relative flex items-center justify-center font-sans py-12 px-4 sm:px-6">
+    <!-- Background -->
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('/assets/register-fashion-bg.png')">
+    </div>
+    <div class="absolute inset-0 bg-neutral-900/40 backdrop-blur-[3px]"></div>
+
+    <!-- Card -->
+    <div
+        class="relative z-10 w-full max-w-5xl bg-white/95 backdrop-blur-xl shadow-2xl overflow-hidden flex flex-col md:flex-row-reverse">
+
+        <!-- Image Side -->
+        <div class="hidden md:block w-1/2 relative">
+            <div class="absolute inset-0 bg-cover bg-center"
+                style="background-image: url('/assets/register-fashion-bg.png')"></div>
+            <div
+                class="absolute inset-0 bg-gradient-to-t from-neutral-900/90 to-transparent flex flex-col justify-end p-12">
+                <h2 class="text-white text-4xl font-light mb-2 tracking-tight">
+                    Join <strong class="font-bold">Trendo</strong>
+                </h2>
+                <p class="text-white/80 text-sm tracking-wide">
+                    Create an account to unlock exclusive offers on clothes and shoes.
+                </p>
+            </div>
+        </div>
+
+        <!-- Form -->
+        <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-white">
+            <div class="mb-8 text-center md:text-left">
+                <a routerLink="/" class="inline-block mb-6">
+                    <img src="/assets/logo.png" alt="Trendo Logo" class="h-10 object-contain" />
+                </a>
+                <h1 class="text-3xl font-light text-neutral-900 mb-2">
+                    Create <strong class="font-bold">Account</strong>
+                </h1>
+                <p class="text-neutral-500 text-sm">Start your premium shopping journey today.</p>
+            </div>
+
+            <form [formGroup]="registerForm" (ngSubmit)="submitForm()" class="space-y-4">
+
+                <!-- Name + Email -->
+                <div class="grid sm:grid-cols-2 gap-4">
+
+                    <!-- Name -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">
+                            Full Name
+                        </label>
+                        <input formControlName="name"
+                            class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 focus:border-neutral-900 outline-none text-sm"
+                            placeholder="John Doe" />
+
+                        @let name = registerForm.get('name');
+                        @if(name?.invalid && name?.touched) {
+                        <p class="text-red-500 text-xs mt-1">
+                            @if(name?.hasError('required')) { Full name is required }
+                            @else if(name?.hasError('minlength')) { Min 3 characters }
+                        </p>
+                        }
+                    </div>
+                <!-- Phone -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">
+                        Phone Number
+                    </label>
+                    <input formControlName="phone"
+                        class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 focus:border-neutral-900 outline-none text-sm"
+                        placeholder="+20 123 456 7890" />
+
+                    @let phone = registerForm.get('phone');
+                    @if(phone?.invalid && phone?.touched) {
+                    <p class="text-red-500 text-xs mt-1">
+                        @if(phone?.hasError('required')) { Phone is required }
+                        @else if(phone?.hasError('pattern')) { Invalid Egyptian number }
+                    </p>
+                    }
+                </div>
+
+                </div>
+
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">
+                            Email Address
+                        </label>
+                        <input formControlName="email"
+                            class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 focus:border-neutral-900 outline-none text-sm"
+                            placeholder="you@example.com" />
+
+                        @let email = registerForm.get('email');
+                        @if(email?.invalid && email?.touched) {
+                        <p class="text-red-500 text-xs mt-1">
+                            @if(email?.hasError('required')) { Email is required }
+                            @else if(email?.hasError('email')) { Invalid email }
+                        </p>
+                        }
+                    </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">
+                        Password
+                    </label>
+
+                    <div class="relative">
+                        <input formControlName="password" [type]="isPasswordVisible ? 'text' : 'password'"
+                            class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 focus:border-neutral-900 outline-none text-sm pr-10"
+                            placeholder="••••••••" />
+
+                        <button type="button" (click)="togglePasswordVisibility()"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-900">
+                            <i class="fa-regular" [class.fa-eye]="isPasswordVisible"
+                                [class.fa-eye-slash]="!isPasswordVisible"></i>
+                        </button>
+                    </div>
+
+                    @let pass = registerForm.get('password');
+                    @if(pass?.invalid && pass?.touched) {
+                    <p class="text-red-500 text-xs mt-1">
+                        @if(pass?.hasError('required')) { Password is required }
+                        @else if(pass?.hasError('pattern')) { Invalid password }
+                    </p>
+                    }
+                </div>
+
+                <!-- Confirm Password -->
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">
+                        Confirm Password
+                    </label>
+
+                    <div class="relative">
+                        <input formControlName="rePassword" [type]="isRePasswordVisible ? 'text' : 'password'"
+                            class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 focus:border-neutral-900 outline-none text-sm pr-10"
+                            placeholder="••••••••" />
+
+                        <button type="button" (click)="toggleRePasswordVisibility()"
+                            class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-900">
+                            <i class="fa-regular" [class.fa-eye]="isRePasswordVisible"
+                                [class.fa-eye-slash]="!isRePasswordVisible"></i>
+                        </button>
+                    </div>
+
+                    @let confirm = registerForm.get('rePassword');
+
+                    @if(confirm?.touched && confirm?.hasError('required')) {
+                    <p class="text-red-500 text-xs mt-1">
+                        Confirmation is required
+                    </p>
+                    }
+
+                    @if(registerForm.errors?.['mismatch'] && confirm?.touched) {
+                    <p class="text-red-500 text-xs mt-1">
+                        Passwords do not match
+                    </p>
+                    }
+                </div>
+                <!-- Submit -->
+                <div class="pt-2">
+                    <button type="submit" [disabled]="isLoading"
+                        class="w-full flex justify-center items-center gap-2 cursor-pointer bg-neutral-900 hover:bg-[#c49a7a] text-white font-bold uppercase tracking-widest text-[10px] py-4 transition-colors disabled:opacity-70">
+                        @if(isLoading) {
+                        <i class="fas fa-spinner fa-spin text-sm"></i> Creating...
+                        } @else {
+                        Create My Account
+                        }
+                    </button>
+                </div>
+
+                @if(errMsg) {
+                <div class="bg-red-50 text-red-500 text-xs p-3 border border-red-200 mt-4 text-center">
+                    {{ errMsg }}
+                </div>
+                }
+                @if(successMsg) {
+                <div class="bg-green-50 text-green-600 text-xs p-3 border border-green-200 mt-4 text-center">
+                    {{ successMsg }}
+                </div>
+                }
+
+            </form>
+
+            <!-- Login -->
+            <div class="text-center mt-4 text-sm">
+                Already have an account?
+                <a routerLink="/login" class="font-bold underline">Login</a>
+            </div>
+        </div>
+    </div>
+</section>

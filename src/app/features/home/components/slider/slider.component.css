@@ -1,0 +1,38 @@
+/* ── Shared slide base ── */
+.hero-slide {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* Dark gradient overlay for readability */
+.hero-slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(10, 10, 10, 0.88) 0%,
+    rgba(10, 10, 10, 0.45) 60%,
+    rgba(10, 10, 10, 0.15) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Per-slide backgrounds ── */
+.hero-slide-1 {
+  background-image: url(/assets/slider-fashion-1.png);
+}
+
+.hero-slide-2 {
+  background-image: url(/assets/slider-fashion-2.png);
+}
+
+.hero-slide-3 {
+  background-image: url(/assets/slider-fashion-3.png);
+}
+
+.hero-slide-4 {
+  background-image: url(/assets/slider-fashion-4.png);
+}
