@@ -112,100 +112,99 @@
 </nav>
 
 <div id="drawer-right"
-    class="fixed top-0 right-0 z-50 h-screen w-full sm:w-100 border-l border-neutral-200 overflow-y-auto bg-white p-8 shadow-2xl transition-transform translate-x-full duration-500 ease-in-out font-sans flex flex-col"
+    class="fixed top-0 right-0 z-50 h-[100dvh] w-full sm:w-100 border-l border-neutral-200 bg-white shadow-2xl transition-transform translate-x-full duration-500 ease-in-out font-sans flex flex-col"
     tabindex="-1">
 
-    <div class="mb-12 flex items-center justify-between">
+    <!-- Drawer Header -->
+    <div class="p-8 pb-4 shrink-0 flex items-center justify-between border-b border-neutral-50">
         <img src="assets/logo.png" alt="Trendo Logo" class="h-6 object-contain" />
         <button type="button" data-drawer-hide="drawer-right"
-            class="flex cursor-pointer items-center justify-center h-8 w-8 text-neutral-900 transition-transform hover:rotate-90 duration-500">
+            class="flex cursor-pointer items-center justify-center h-10 w-10 text-neutral-900 transition-transform hover:rotate-90 duration-500 rounded-full hover:bg-neutral-50">
             <i class="fas fa-times text-xl"></i>
         </button>
     </div>
 
-    <!-- links  -->
-    <nav class="mb-10 flex flex-col gap-6">
-        <a routerLink="/" data-drawer-hide="drawer-right"
-            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
-            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Home
-        </a>
-        <a routerLink="/shop" data-drawer-hide="drawer-right"
-            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
-            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Shop
-        </a>
-        <a routerLink="/categories" data-drawer-hide="drawer-right"
-            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
-            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Categories
-        </a>
-        <a routerLink="/brands" data-drawer-hide="drawer-right"
-            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
-            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Brands
-        </a>
-        <a routerLink="/support" data-drawer-hide="drawer-right"
-            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
-            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Contact Us
-        </a>
-    </nav>
+    <!-- Scrollable Body -->
+    <div class="flex-grow overflow-y-auto p-8 py-10 custom-scrollbar">
+        <!-- Main Links -->
+        <nav class="flex flex-col gap-8 mb-12">
+            <a routerLink="/" data-drawer-hide="drawer-right"
+                class="group text-xs uppercase font-bold tracking-[0.25em] text-neutral-900 hover:text-[#c49a7a] transition-all flex items-center gap-4">
+                <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-6"></span> Home
+            </a>
+            <a routerLink="/shop" data-drawer-hide="drawer-right"
+                class="group text-xs uppercase font-bold tracking-[0.25em] text-neutral-900 hover:text-[#c49a7a] transition-all flex items-center gap-4">
+                <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-6"></span> Shop
+            </a>
+            <a routerLink="/categories" data-drawer-hide="drawer-right"
+                class="group text-xs uppercase font-bold tracking-[0.25em] text-neutral-900 hover:text-[#c49a7a] transition-all flex items-center gap-4">
+                <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-6"></span> Categories
+            </a>
+            <a routerLink="/brands" data-drawer-hide="drawer-right"
+                class="group text-xs uppercase font-bold tracking-[0.25em] text-neutral-900 hover:text-[#c49a7a] transition-all flex items-center gap-4">
+                <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-6"></span> Brands
+            </a>
+            <a routerLink="/support" data-drawer-hide="drawer-right"
+                class="group text-xs uppercase font-bold tracking-[0.25em] text-neutral-900 hover:text-[#c49a7a] transition-all flex items-center gap-4">
+                <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-6"></span> Contact Us
+            </a>
+        </nav>
 
-    <div class="w-8 h-px bg-neutral-900 mb-10"></div>
+        <div class="w-12 h-px bg-neutral-100 mb-12"></div>
 
-    <div class="flex flex-col gap-6 mb-10">
-        <a routerLink="/wishlist" data-drawer-hide="drawer-right"
-            class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-500 hover:text-[#c49a7a] transition-colors flex items-center gap-3">
-            <i class="fa-solid fa-heart text-base"></i> Wishlist
-        </a>
-        <a routerLink="/cart" data-drawer-hide="drawer-right"
-            class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-500 hover:text-[#c49a7a] transition-colors flex items-center gap-3">
-            <i class="fas fa-shopping-bag text-base"></i> My Cart ({{ cartBadgeNumber() }})
-        </a>
-        @if(isLogged()) {
-        <a routerLink="/allorders" data-drawer-hide="drawer-right"
-            class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-500 hover:text-[#c49a7a] transition-colors flex items-center gap-3">
-            <i class="fas fa-receipt text-base"></i> My Orders
-        </a>
-        <a routerLink="/profile" data-drawer-hide="drawer-right"
-            class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-500 hover:text-[#c49a7a] transition-colors flex items-center gap-3">
-            <i class="fas fa-user-circle text-base"></i> Profile
-        </a>
-        }
+        <!-- Utility Links -->
+        <div class="flex flex-col gap-7">
+            <a routerLink="/wishlist" data-drawer-hide="drawer-right"
+                class="text-[10px] uppercase font-bold tracking-[0.2em] text-neutral-400 hover:text-[#c49a7a] transition-colors flex items-center gap-4">
+                <i class="fa-solid fa-heart text-base"></i> Wishlist
+            </a>
+            <a routerLink="/cart" data-drawer-hide="drawer-right"
+                class="text-[10px] uppercase font-bold tracking-[0.2em] text-neutral-400 hover:text-[#c49a7a] transition-colors flex items-center gap-4">
+                <i class="fas fa-shopping-bag text-base"></i> My Cart ({{ cartBadgeNumber() }})
+            </a>
+            @if(isLogged()) {
+            <a routerLink="/allorders" data-drawer-hide="drawer-right"
+                class="text-[10px] uppercase font-bold tracking-[0.2em] text-neutral-400 hover:text-[#c49a7a] transition-colors flex items-center gap-4">
+                <i class="fas fa-receipt text-base"></i> My Orders
+            </a>
+            <a routerLink="/profile" data-drawer-hide="drawer-right"
+                class="text-[10px] uppercase font-bold tracking-[0.2em] text-neutral-400 hover:text-[#c49a7a] transition-colors flex items-center gap-4">
+                <i class="fas fa-user-circle text-base"></i> Profile Settings
+            </a>
+            }
+        </div>
     </div>
 
-    <div class="mt-auto flex flex-col gap-4">
+    <!-- Drawer Footer -->
+    <div class="p-8 pt-4 shrink-0 border-t border-neutral-50 bg-neutral-50/30">
         @if(isLogged()){
-        <div class="flex items-center gap-3 p-4 bg-neutral-50 rounded-xl border border-neutral-100 mb-2">
-
-            <div
-                class="w-10 h-10 bg-neutral-900 flex items-center justify-center shrink-0 relative overflow-hidden group">
-
-                <div
-                    class="absolute inset-0 bg-[#c49a7a] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+            <div class="flex items-center gap-4 p-4 bg-white border border-neutral-100 mb-4 shadow-sm">
+                <div class="w-12 h-12 bg-neutral-900 flex items-center justify-center shrink-0 relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-[#c49a7a] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out"></div>
+                    <span class="relative z-10 text-sm font-bold text-white">
+                        {{ userName().charAt(0).toUpperCase() }}
+                    </span>
                 </div>
-
-                <span class="relative z-10 text-sm font-bold text-white">
-                    {{ userName().charAt(0).toUpperCase() }}
-                </span>
-
+                <div class="min-w-0">
+                    <p class="text-sm font-bold text-neutral-900 truncate">{{ userName() }}</p>
+                    <p class="text-[9px] text-[#c49a7a] uppercase font-black tracking-widest mt-0.5">Premium Member</p>
+                </div>
             </div>
-
-            <div class="min-w-0">
-                <p class="text-sm font-bold text-neutral-900 truncate">{{ userName() }}</p>
-                <p class="text-2xs text-neutral-400 uppercase tracking-widest">Member</p>
-            </div>
-
-        </div>
-        <a (click)="openSignOutModal()" data-drawer-hide="drawer-right"
-            class="w-full border border-neutral-900 bg-white py-4 text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 hover:bg-[#c49a7a] hover:border-[#c49a7a] hover:text-white transition-colors text-center cursor-pointer">
-            Sign Out
-        </a>
+            <button (click)="openSignOutModal()" data-drawer-hide="drawer-right"
+                class="w-full bg-white border border-neutral-900 py-4 text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 hover:bg-neutral-900 hover:text-white transition-all text-center cursor-pointer">
+                Sign Out
+            </button>
         }@else{
-        <a routerLink="/login" data-drawer-hide="drawer-right"
-            class="w-full border border-neutral-900 bg-white py-4 text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 hover:border-[#c49a7a] hover:text-[#c49a7a] transition-colors text-center cursor-pointer">
-            Sign In
-        </a>
-        <a routerLink="/register" data-drawer-hide="drawer-right"
-            class="w-full bg-neutral-900 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white hover:bg-[#c49a7a] hover:border-[#c49a7a]border border-neutral-900 transition-colors text-center cursor-pointer">
-            Create Account
-        </a>
+            <div class="flex flex-col gap-3">
+                <a routerLink="/login" data-drawer-hide="drawer-right"
+                    class="w-full border border-neutral-900 bg-white py-4 text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 hover:bg-neutral-50 transition-colors text-center cursor-pointer">
+                    Sign In
+                </a>
+                <a routerLink="/register" data-drawer-hide="drawer-right"
+                    class="w-full bg-neutral-900 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white hover:bg-[#c49a7a] border border-neutral-900 transition-colors text-center cursor-pointer">
+                    Create Account
+                </a>
+            </div>
         }
     </div>
 </div>

@@ -5,3 +5,20 @@
 .active span {
     width: 100% !important;
 }
+
+/* Custom Scrollbar for Drawer */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #f3f3f3;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #e5e5e5;
+}
