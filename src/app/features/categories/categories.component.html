@@ -9,173 +9,198 @@
         </div>
 
         <div class="flex flex-col lg:flex-row gap-12 items-start">
-            
-            <div class="w-full lg:w-1/4 shrink-0 lg:sticky lg:top-32">
-                <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-[#c49a7a] mb-6">Browse Collections</h4>
-                
-                @if (isLoading()) {
-                    <div class="flex flex-col gap-4">
-                        @for (item of [1,2,3,4,5,6]; track $index) {
-                            <div class="h-14 w-full bg-neutral-50 animate-pulse rounded-none"></div>
-                        }
-                    </div>
-                } @else {
-                    <ul class="flex flex-col gap-2">
-                        @for (cat of categoriesList(); track cat._id) {
-                            <li>
-                                <!-- Category Header / Button -->
-                                <button 
-                                    (click)="toggleCategory(cat._id, cat.name)"
-                                    class="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 border border-transparent hover:bg-neutral-50 cursor-pointer"
-                                    [class.bg-neutral-50]="expandedCategoryId() === cat._id"
-                                    [class.border-neutral-100]="expandedCategoryId() === cat._id">
-                                    <div class="flex items-center gap-4">
-                                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white shrink-0 shadow-sm border border-neutral-100 p-1">
-                                            <img [src]="cat.image" [alt]="cat.name" class="w-full h-full object-cover rounded-full">
-                                        </div>
-                                        <span class="text-xs font-bold uppercase tracking-widest text-neutral-900">{{ cat.name }}</span>
-                                    </div>
-                                    <i class="fas fa-chevron-down text-[10px] text-neutral-400 transition-transform duration-300"
-                                       [class.rotate-180]="expandedCategoryId() === cat._id"></i>
-                                </button>
 
-                                <!-- Subcategories Drawer -->
-                                <div class="overflow-hidden transition-all duration-500 ease-in-out"
-                                     [class.max-h-0]="expandedCategoryId() !== cat._id"
-                                     [class.max-h-[800px]]="expandedCategoryId() === cat._id"
-                                     [class.opacity-0]="expandedCategoryId() !== cat._id"
-                                     [class.opacity-100]="expandedCategoryId() === cat._id">
-                                     
-                                    @if (isSubLoading() && expandedCategoryId() === cat._id) {
-                                        <div class="py-6 flex justify-center">
-                                            <div class="w-5 h-5 border-[2px] border-neutral-100 border-t-[#c49a7a] rounded-full animate-spin"></div>
-                                        </div>
-                                    } @else {
-                                        <div class="pl-12 pr-4 py-3 flex flex-col gap-1 border-l border-neutral-100 ml-9 my-2">
-                                            @for (sub of subcategoriesList(); track sub._id) {
-                                                <button 
-                                                    (click)="selectSubcategory(sub._id, sub.name)"
-                                                    class="text-left text-xs py-2 transition-colors duration-300 cursor-pointer flex items-center gap-3"
-                                                    [class.text-[#c49a7a]]="selectedSubcategoryId() === sub._id"
-                                                    [class.font-bold]="selectedSubcategoryId() === sub._id"
-                                                    [class.text-neutral-500]="selectedSubcategoryId() !== sub._id"
-                                                    [class.hover:text-neutral-900]="selectedSubcategoryId() !== sub._id">
-                                                    <span class="w-1.5 h-px transition-all duration-300"
-                                                          [class.bg-[#c49a7a]]="selectedSubcategoryId() === sub._id"
-                                                          [class.bg-neutral-300]="selectedSubcategoryId() !== sub._id"
-                                                          [class.w-3]="selectedSubcategoryId() === sub._id"></span>
-                                                    {{ sub.name }}
-                                                </button>
-                                            } @empty {
-                                                <span class="text-[10px] text-neutral-400 py-2 italic">No subcategories</span>
-                                            }
-                                        </div>
-                                    }
+            <div class="w-full lg:w-1/4 shrink-0 lg:sticky lg:top-32">
+                <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-[#c49a7a] mb-6">Browse Collections
+                </h4>
+
+                @if (isLoading()) {
+                <div class="flex flex-col gap-4">
+                    @for (item of [1,2,3,4,5,6]; track $index) {
+                    <div class="h-14 w-full bg-neutral-50 animate-pulse rounded-none"></div>
+                    }
+                </div>
+                } @else {
+                <ul class="flex flex-col gap-2">
+                    @for (cat of categoriesList(); track cat._id) {
+                    <li>
+                        <!-- Category Header / Button -->
+                        <button (click)="toggleCategory(cat._id, cat.name)"
+                            class="w-full flex items-center justify-between py-3 px-4 transition-all duration-300 border border-transparent hover:bg-neutral-50 cursor-pointer"
+                            [class.bg-neutral-50]="expandedCategoryId() === cat._id"
+                            [class.border-neutral-100]="expandedCategoryId() === cat._id">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-10 h-10 rounded-full overflow-hidden bg-white shrink-0 shadow-sm border border-neutral-100 p-1">
+                                    <img [src]="cat.image" [alt]="cat.name"
+                                        class="w-full h-full object-cover rounded-full">
                                 </div>
-                            </li>
-                        }
-                    </ul>
+                                <span class="text-xs font-bold uppercase tracking-widest text-neutral-900">{{ cat.name
+                                    }}</span>
+                            </div>
+                            <i class="fas fa-chevron-down text-[10px] text-neutral-400 transition-transform duration-300"
+                                [class.rotate-180]="expandedCategoryId() === cat._id"></i>
+                        </button>
+
+                        <!-- Subcategories Drawer -->
+                        <div class="overflow-hidden transition-all duration-500 ease-in-out"
+                            [class.max-h-0]="expandedCategoryId() !== cat._id"
+                            [class.max-h-[800px]]="expandedCategoryId() === cat._id"
+                            [class.opacity-0]="expandedCategoryId() !== cat._id"
+                            [class.opacity-100]="expandedCategoryId() === cat._id">
+
+                            @if (isSubLoading() && expandedCategoryId() === cat._id) {
+                            <div class="py-6 flex justify-center">
+                                <div
+                                    class="w-5 h-5 border-[2px] border-neutral-100 border-t-[#c49a7a] rounded-full animate-spin">
+                                </div>
+                            </div>
+                            } @else {
+                            <div class="pl-12 pr-4 py-3 flex flex-col gap-1 border-l border-neutral-100 ml-9 my-2">
+                                @for (sub of subcategoriesList(); track sub._id) {
+                                <button (click)="selectSubcategory(sub._id, sub.name)"
+                                    class="text-left text-xs py-2 transition-colors duration-300 cursor-pointer flex items-center gap-3"
+                                    [class.text-[#c49a7a]]="selectedSubcategoryId() === sub._id"
+                                    [class.font-bold]="selectedSubcategoryId() === sub._id"
+                                    [class.text-neutral-500]="selectedSubcategoryId() !== sub._id"
+                                    [class.hover:text-neutral-900]="selectedSubcategoryId() !== sub._id">
+                                    <span class="w-1.5 h-px transition-all duration-300"
+                                        [class.bg-[#c49a7a]]="selectedSubcategoryId() === sub._id"
+                                        [class.bg-neutral-300]="selectedSubcategoryId() !== sub._id"
+                                        [class.w-3]="selectedSubcategoryId() === sub._id"></span>
+                                    {{ sub.name }}
+                                </button>
+                                } @empty {
+                                <span class="text-[10px] text-neutral-400 py-2 italic">No subcategories</span>
+                                }
+                            </div>
+                            }
+                        </div>
+                    </li>
+                    }
+                </ul>
                 }
             </div>
 
             <!-- RIGHT MAIN CONTENT: Products Grid -->
             <div class="w-full lg:w-3/4">
                 @if (!expandedCategoryId()) {
-                    <div class="w-full h-[500px] bg-neutral-50/50 border border-neutral-100 flex flex-col items-center justify-center text-center p-8 animate-fade-in">
-                        <i class="fas fa-layer-group text-4xl text-neutral-200 mb-6"></i>
-                        <h3 class="text-sm font-bold uppercase tracking-[0.2em] text-neutral-900 mb-3">Explore Our Collections</h3>
-                        <p class="text-xs text-neutral-500 max-w-md leading-relaxed">Select a category from the sidebar to browse our exclusive curated products.</p>
-                    </div>
+                <div
+                    class="w-full h-[500px] bg-neutral-50/50 border border-neutral-100 flex flex-col items-center justify-center text-center p-8 animate-fade-in">
+                    <i class="fas fa-layer-group text-4xl text-neutral-200 mb-6"></i>
+                    <h3 class="text-sm font-bold uppercase tracking-[0.2em] text-neutral-900 mb-3">Explore Our
+                        Collections</h3>
+                    <p class="text-xs text-neutral-500 max-w-md leading-relaxed">Select a category from the sidebar to
+                        browse our exclusive curated products.</p>
+                </div>
                 } @else {
-                    <div class="mb-8 flex items-end justify-between animate-fade-in border-b border-neutral-100 pb-4">
-                        <div>
-                            @if (isProductsForCategory()) {
-                                <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-[#c49a7a] mb-2">Collection</h4>
-                                <h3 class="text-2xl font-light text-neutral-900 tracking-tight">{{ selectedCategoryName() }}</h3>
-                            } @else {
-                                <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-[#c49a7a] mb-2">{{ selectedCategoryName() }}</h4>
-                                <h3 class="text-2xl font-light text-neutral-900 tracking-tight">{{ selectedSubcategoryName() }}</h3>
-                            }
-                        </div>
-                        @if (!isProductsLoading()) {
-                            <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">{{ categoryProducts().length }} Items</span>
+                <div class="mb-8 flex items-end justify-between animate-fade-in border-b border-neutral-100 pb-4">
+                    <div>
+                        @if (isProductsForCategory()) {
+                        <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-[#c49a7a] mb-2">Collection
+                        </h4>
+                        <h3 class="text-2xl font-light text-neutral-900 tracking-tight">{{ selectedCategoryName() }}
+                        </h3>
+                        } @else {
+                        <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-[#c49a7a] mb-2">{{
+                            selectedCategoryName() }}</h4>
+                        <h3 class="text-2xl font-light text-neutral-900 tracking-tight">{{ selectedSubcategoryName() }}
+                        </h3>
                         }
                     </div>
-
-                    @if (isProductsLoading()) {
-                        <div class="flex justify-center py-32">
-                            <div class="w-10 h-10 border-[2px] border-neutral-100 border-t-[#c49a7a] rounded-full animate-spin"></div>
-                        </div>
-                    } @else {
-                        <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 animate-fade-in">
-                            @for (product of categoryProducts(); track product._id) {
-                                <!-- Premium Product Card -->
-                                <a [routerLink]="['/details', product._id, product.slug || 'product']" class="group cursor-pointer bg-white border border-neutral-100 hover:border-[#c49a7a]/40 hover:shadow-2xl hover:shadow-[#c49a7a]/5 transition-all duration-500 overflow-hidden flex flex-col h-full relative">
-            
-                                    <!-- Image Area -->
-                                    <div class="aspect-4/5 bg-neutral-50 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
-                                      <img [src]="product.imageCover" [alt]="product.title"
-                                        class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700 ease-out" />
-                                      
-                                      <!-- Explore Overlay -->
-                                      <div class="absolute inset-0 bg-white/0 group-hover:bg-white/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center z-10">
-                                         <div class="bg-neutral-900/80 backdrop-blur-md text-white text-xs font-bold uppercase tracking-[0.2em] py-3 px-6 translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-xl text-center">
-                                           Explore
-                                         </div>
-                                      </div>
-
-                                      <!-- Floating Wishlist Action -->
-                                      <div class="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-3 group-hover:translate-x-0 transition-all duration-400 z-20">
-                                        <button (click)="toggleWishlist(product._id); $event.preventDefault(); $event.stopPropagation()"
-                                          class="w-8 h-8 rounded-full bg-white border border-neutral-100 flex items-center justify-center text-neutral-400 hover:text-[#c49a7a] hover:border-[#c49a7a] shadow-sm transition-all cursor-pointer"
-                                          title="Wishlist">
-                                          <i class="fa-heart" [class.fas]="wishlistIds().has(product._id)" [class.far]="!wishlistIds().has(product._id)" [class.text-red-500]="wishlistIds().has(product._id)"></i>
-                                        </button>
-                                      </div>
-                    
-                                      <!-- Add to Cart Slide-up Action -->
-                                      <button (click)="addToCart(product._id); $event.preventDefault(); $event.stopPropagation()"
-                                        class="absolute cursor-pointer bottom-0 left-0 w-full text-white flex items-center justify-center gap-2 px-4 py-3.5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out z-20"
-                                        [class.bg-emerald-700]="addedProducts().has(product._id)"
-                                        [class.hover:bg-[#c49a7a]]="!addedProducts().has(product._id)"
-                                        [class.bg-neutral-900]="!addedProducts().has(product._id)">
-                                        @if (addedProducts().has(product._id)) {
-                                          <span class="text-[9px] uppercase font-bold tracking-[0.2em]">Added To Bag</span>
-                                          <i class="fas fa-check text-[9px]"></i>
-                                        } @else {
-                                          <span class="text-[9px] uppercase font-bold tracking-[0.2em]">Add To Bag</span>
-                                          <i class="fas fa-plus text-[9px]"></i>
-                                        }
-                                      </button>
-                                    </div>
-                        
-                                    <!-- Content Area -->
-                                    <div class="p-4 sm:p-5 flex flex-col grow">
-                                      <p class="text-[9px] font-bold uppercase tracking-widest text-[#c49a7a] mb-2 truncate">{{ product.category?.name || selectedSubcategoryName() }}</p>
-                                      <h4 class="text-xs sm:text-sm font-medium text-neutral-900 line-clamp-2 leading-snug mb-4 group-hover:text-[#c49a7a] transition-colors min-h-[2.5rem]">{{ product.title }}</h4>
-                                      
-                                      <div class="mt-auto flex items-center justify-between">
-                                        <span class="text-base sm:text-lg font-light tracking-tight text-neutral-900">{{ product.price | currency:'GBP' }}</span>
-                                        <div class="flex gap-0.5 bg-neutral-50 px-2 py-1 rounded-full">
-                                          @for (i of [1,2,3,4,5]; track $index) {
-                                            <i class="fa-star text-[8px]"
-                                              [class.fas]="product.ratingsAverage >= i"
-                                              [class.far]="product.ratingsAverage < i"
-                                              [class.text-[#c49a7a]]="product.ratingsAverage >= i"
-                                              [class.text-neutral-300]="product.ratingsAverage < i"></i>
-                                          }
-                                        </div>
-                                      </div>
-                                    </div>
-                                </a>
-                            } @empty {
-                                <div class="col-span-full py-24 text-center bg-neutral-50 border border-dashed border-neutral-200">
-                                    <i class="fas fa-tag text-3xl text-neutral-200 mb-4"></i>
-                                    <p class="text-xs uppercase tracking-[0.2em] text-neutral-400 font-bold">No products currently available.</p>
-                                </div>
-                            }
-                        </div>
+                    @if (!isProductsLoading()) {
+                    <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">{{
+                        categoryProducts().length }} Items</span>
                     }
+                </div>
+
+                @if (isProductsLoading()) {
+                <div class="flex justify-center py-32">
+                    <div class="w-10 h-10 border-[2px] border-neutral-100 border-t-[#c49a7a] rounded-full animate-spin">
+                    </div>
+                </div>
+                } @else {
+                <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 animate-fade-in">
+                    @for (product of categoryProducts(); track product._id) {
+                    <!-- Premium Product Card -->
+                    <a [routerLink]="['/details', product._id, product.slug || 'product']"
+                        class="group cursor-pointer bg-white border border-neutral-100 hover:border-[#c49a7a]/40 hover:shadow-2xl hover:shadow-[#c49a7a]/5 transition-all duration-500 overflow-hidden flex flex-col h-full relative">
+
+                        <!-- Image Area -->
+                        <div
+                            class="aspect-4/5 bg-neutral-50 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+                            <img [src]="product.imageCover" [alt]="product.title"
+                                class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700 ease-out" />
+
+                            <!-- Explore Overlay -->
+                            <div
+                                class="absolute inset-0 bg-white/0 group-hover:bg-white/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center z-10">
+                                <div
+                                    class="bg-neutral-900/90 backdrop-blur-md text-white text-xs font-bold uppercase tracking-[0.2em] py-3 px-6 translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-xl text-center">
+                                    Explore
+                                </div>
+                            </div>
+
+                            <!-- Floating Wishlist Action -->
+                            <div
+                                class="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-3 group-hover:translate-x-0 transition-all duration-400 z-20">
+                                <button
+                                    (click)="toggleWishlist(product._id); $event.preventDefault(); $event.stopPropagation()"
+                                    class="w-8 h-8 rounded-full bg-white border border-neutral-100 flex items-center justify-center text-neutral-400 hover:text-[#c49a7a] hover:border-[#c49a7a] shadow-sm transition-all cursor-pointer"
+                                    title="Wishlist">
+                                    <i class="fa-heart" [class.fas]="wishlistIds().has(product._id)"
+                                        [class.far]="!wishlistIds().has(product._id)"
+                                        [class.text-red-500]="wishlistIds().has(product._id)"></i>
+                                </button>
+                            </div>
+
+                            <!-- Add to Cart Slide-up Action -->
+                            <button (click)="addToCart(product._id); $event.preventDefault(); $event.stopPropagation()"
+                                class="absolute cursor-pointer bottom-0 left-0 w-full text-white flex items-center justify-center gap-2 px-4 py-3.5 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out z-20"
+                                [class.bg-emerald-700]="addedProducts().has(product._id)"
+                                [class.hover:bg-[#c49a7a]]="!addedProducts().has(product._id)"
+                                [class.bg-neutral-900]="!addedProducts().has(product._id)">
+                                @if (addedProducts().has(product._id)) {
+                                <span class="text-[9px] uppercase font-bold tracking-[0.2em]">Added To Bag</span>
+                                <i class="fas fa-check text-[9px]"></i>
+                                } @else {
+                                <span class="text-[9px] uppercase font-bold tracking-[0.2em]">Add To Bag</span>
+                                <i class="fas fa-plus text-[9px]"></i>
+                                }
+                            </button>
+                        </div>
+
+                        <!-- Content Area -->
+                        <div class="p-4 sm:p-5 flex flex-col grow">
+                            <p class="text-[9px] font-bold uppercase tracking-widest text-[#c49a7a] mb-2 truncate">{{
+                                product.category?.name || selectedSubcategoryName() }}</p>
+                            <h4
+                                class="text-xs sm:text-sm font-medium text-neutral-900 line-clamp-2 leading-snug mb-4 group-hover:text-[#c49a7a] transition-colors min-h-[2.5rem]">
+                                {{ product.title }}</h4>
+
+                            <div class="mt-auto flex items-center justify-between">
+                                <span class="text-base sm:text-lg font-light tracking-tight text-neutral-900">{{
+                                    product.price | currency:'GBP' }}</span>
+                                <div class="flex gap-0.5 bg-neutral-50 px-2 py-1 rounded-full">
+                                    @for (i of [1,2,3,4,5]; track $index) {
+                                    <i class="fa-star text-[8px]" [class.fas]="product.ratingsAverage >= i"
+                                        [class.far]="product.ratingsAverage < i"
+                                        [class.text-[#c49a7a]]="product.ratingsAverage >= i"
+                                        [class.text-neutral-300]="product.ratingsAverage < i"></i>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    } @empty {
+                    <div class="col-span-full py-24 text-center bg-neutral-50 border border-dashed border-neutral-200">
+                        <i class="fas fa-tag text-3xl text-neutral-200 mb-4"></i>
+                        <p class="text-xs uppercase tracking-[0.2em] text-neutral-400 font-bold">No products currently
+                            available.</p>
+                    </div>
+                    }
+                </div>
+                }
                 }
             </div>
         </div>

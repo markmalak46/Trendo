@@ -36,52 +36,68 @@
         </a>
       </div>
     } @else {
-      <!-- Wishlist Items -->
-      <div class="grid grid-cols-1 gap-px bg-neutral-200 border border-neutral-200">
+      <!-- Wishlist Items Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 lg:gap-8 animate-fade-in">
         @for (item of wishlistItems(); track item._id) {
-          <div class="bg-white p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-8 group">
-            
-            <!-- Image -->
-            <div class="w-40 h-40 bg-neutral-50 shrink-0 flex items-center justify-center p-4 relative overflow-hidden"
-              [routerLink]="['/details', item._id, item.slug]">
-              <img [src]="item.imageCover" [alt]="item.title"
-                class="w-full h-full object-contain mix-blend-multiply group-hover:scale-105 transition-transform duration-700" />
-            </div>
+          <a [routerLink]="['/details', item._id, item.slug]" 
+             class="group cursor-pointer bg-white border border-neutral-100 hover:border-[#c49a7a]/40 hover:shadow-2xl hover:shadow-[#c49a7a]/5 transition-all duration-500 overflow-hidden flex flex-col h-full relative">
+      
+              <!-- Image Area -->
+              <div class="aspect-4/5 bg-neutral-50 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+                  <img [src]="item.imageCover" [alt]="item.title"
+                       class="w-full h-full object-contain mix-blend-multiply group-hover:scale-110 transition-transform duration-700 ease-out" />
+                  
+                  <!-- Explore Overlay -->
+                  <div class="absolute inset-0 bg-white/0 group-hover:bg-white/20 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center z-10">
+                      <div class="bg-neutral-900/90 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-[0.2em] py-3 px-6 rounded-none translate-y-4 group-hover:translate-y-0 transition-all duration-500 shadow-xl text-center">
+                        Explore
+                      </div>
+                  </div>
 
-            <!-- Details -->
-            <div class="grow text-center sm:text-left">
-              @if (item.brand) {
-                <p class="text-[9px] font-black tracking-[0.3em] uppercase text-neutral-400 mb-2">{{ item.brand.name }}</p>
-              }
-              <h3 [routerLink]="['/details', item._id, item.slug]"
-                class="text-sm sm:text-base font-light text-neutral-900 hover:text-[#c49a7a] transition-colors cursor-pointer mb-2">
-                {{ item.title }}
-              </h3>
-              <p class="text-[9px] font-bold uppercase tracking-[0.15em] text-neutral-400 mb-4">{{ item.category.name }}</p>
-              
-              <div class="flex items-center justify-center sm:justify-start gap-4">
-                <span class="text-base font-bold tracking-tight text-neutral-900">{{ item.price | currency:'GBP' }}</span>
+                  <!-- Floating Actions (Remove) -->
+                  <div class="absolute top-4 right-4 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-3 group-hover:translate-x-0 transition-all duration-400 z-20">
+                    <button (click)="removeFromWishlist(item._id); $event.preventDefault(); $event.stopPropagation()"
+                      class="w-8 h-8 rounded-full bg-white border border-neutral-100 flex items-center justify-center text-red-400 hover:text-red-600 hover:border-red-600 shadow-sm transition-all cursor-pointer"
+                      title="Remove from wishlist">
+                      <i class="fas fa-times text-[10px]"></i>
+                    </button>
+                  </div>
+
+                  <!-- Add to cart slide-up -->
+                  <button (click)="addToCart(item._id); $event.preventDefault(); $event.stopPropagation()"
+                    class="absolute cursor-pointer bottom-0 left-0 w-full text-white flex items-center justify-center gap-2 px-4 py-3.5 translate-y-full  group-hover:translate-y-0 transition-transform duration-500 ease-in-out z-20"
+                    [class.bg-emerald-700]="addedToCart().has(item._id)"
+                    [class.hover:bg-[#c49a7a]]="!addedToCart().has(item._id)"
+                    [class.bg-neutral-900]="!addedToCart().has(item._id)">
+                    @if (addedToCart().has(item._id)) {
+                      <span class="text-[9px] uppercase font-bold tracking-[0.2em]">Added To Bag</span>
+                      <i class="fas fa-check text-[9px]"></i>
+                    } @else {
+                      <span class="text-[9px] uppercase font-bold tracking-[0.2em]">Add To Bag</span>
+                      <i class="fas fa-plus text-[9px]"></i>
+                    }
+                  </button>
               </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="flex flex-col sm:flex-row items-stretch gap-2 w-full sm:w-auto">
-              <button (click)="addToCart(item._id)"
-                class="bg-neutral-900 text-white text-xs font-black uppercase tracking-[0.2em] px-8 py-4 flex items-center justify-center gap-2 hover:bg-[#c49a7a] transition-colors duration-300 cursor-pointer"
-                [disabled]="addedToCart().has(item._id)">
-                @if (addedToCart().has(item._id)) {
-                  Added <i class="fas fa-check text-[9px]"></i>
-                } @else {
-                  Add to Bag
-                }
-              </button>
-              <button (click)="removeFromWishlist(item._id)"
-                class="border border-neutral-200 text-neutral-400 text-xs font-bold uppercase tracking-[0.15em] px-8 py-4 hover:border-red-200 hover:text-red-500 hover:bg-red-50/30 transition-all cursor-pointer">
-                Remove
-              </button>
-            </div>
-
-          </div>
+  
+              <!-- Content Area -->
+              <div class="p-4 sm:p-6 flex flex-col grow">
+                  <p class="text-[9px] sm:text-xs font-bold uppercase tracking-widest text-[#c49a7a] mb-2 truncate">{{ item.brand?.name || item.category?.name }}</p>
+                  <h4 class="text-xs sm:text-sm font-medium text-neutral-900 line-clamp-2 leading-snug mb-4 group-hover:text-[#c49a7a] transition-colors min-h-10">{{ item.title }}</h4>
+                  
+                  <div class="mt-auto flex items-center justify-between">
+                    <span class="text-base sm:text-lg font-light tracking-tight text-neutral-900">{{ item.price | currency:'GBP' }}</span>
+                    <div class="flex gap-0.5 bg-neutral-50 px-2 py-1 rounded-full">
+                      @for (i of [1,2,3,4,5]; track $index) {
+                        <i class="fa-star text-[8px]"
+                          [class.fas]="item.ratingsAverage >= i"
+                          [class.far]="item.ratingsAverage < i"
+                          [class.text-[#c49a7a]]="item.ratingsAverage >= i"
+                          [class.text-neutral-300]="item.ratingsAverage < i"></i>
+                      }
+                    </div>
+                  </div>
+              </div>
+          </a>
         }
       </div>
 
