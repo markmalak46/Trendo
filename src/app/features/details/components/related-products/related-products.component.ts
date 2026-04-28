@@ -23,7 +23,6 @@ export class RelatedProductsComponent implements OnChanges {
   @ViewChild('relatedScroll') relatedScroll!: ElementRef<HTMLDivElement>;
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges in RelatedProductsComponent:', changes, this.categoryId, this.currentProductId);
     if (changes['categoryId'] || changes['currentProductId']) {
       if (this.categoryId) {
         this.isRelatedLoading.set(true);
@@ -37,10 +36,7 @@ export class RelatedProductsComponent implements OnChanges {
             this.relatedProducts.set(filtered.slice(0, 6));
             this.isRelatedLoading.set(false);
           },
-          error: (err) => {
-            console.error('Related API Error:', err);
-            this.isRelatedLoading.set(false);
-          }
+          error: () => this.isRelatedLoading.set(false)
         });
       }
     }

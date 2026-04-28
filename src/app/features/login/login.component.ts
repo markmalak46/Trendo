@@ -40,13 +40,14 @@ export class LoginComponent {
           if (res.message === 'success') {
             this.successMsg = 'Login Successful!';
             localStorage.setItem('TrendoToken', res.token);
-            // Merge API user with login email (API may omit email in the user object)
+
             const userToStore = {
               name: res.user?.name || '',
               email: res.user?.email || this.loginForm.value.email,
               role: res.user?.role || 'user',
               phone: res.user?.phone || ''
             };
+            
             localStorage.setItem('TrendoUser', JSON.stringify(userToStore));
             this.authService.isLogged.set(true);
             this.authService.loadUserFromToken();
