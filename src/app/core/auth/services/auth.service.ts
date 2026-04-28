@@ -17,7 +17,6 @@ export class AuthService {
   userEmail = signal<string>('');
   userId = signal<string>('');
 
-  /** Call this after login or on app boot to hydrate user signals from token */
   loadUserFromToken(): void {
     const token = localStorage.getItem('TrendoToken');
     if (!token) {
@@ -66,5 +65,13 @@ export class AuthService {
 
   resetPassword(data: any): Observable<any> {
     return this.http.put(`${environment.baseUrl}/api/v1/auth/resetPassword`, data);
+  }
+
+  changeUserPassword(data: any): Observable<any> {
+    return this.http.put(`${environment.baseUrl}/api/v1/users/changeMyPassword`, data);
+  }
+
+  updateUserData(data: any): Observable<any> {
+    return this.http.put(`${environment.baseUrl}/api/v1/users/updateMe`, data);
   }
 }

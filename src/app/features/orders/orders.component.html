@@ -1,232 +1,229 @@
-<!-- Elegant Minimalist Orders Page -->
-<section class="py-12 lg:py-20 bg-white font-sans min-h-screen">
-    <div class="px-4 sm:px-6 lg:px-8 max-w-300 mx-auto">
+<section class="min-h-screen bg-[#fafafa] font-sans pb-24">
+    
+    <!-- Hero Banner Detail -->
+    <div class="h-1 bg-neutral-900 w-full"></div>
 
-        <!-- Header -->
-        <div
-            class="mb-12 border-b border-neutral-100 pb-8 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
-            <div>
-                <h2 class="text-xs font-bold uppercase tracking-[0.3em] text-neutral-400 mb-2">Account</h2>
-                <h1 class="text-3xl sm:text-4xl font-light text-neutral-900 tracking-tight">My Orders</h1>
+    <div class="mx-auto max-w-350 px-4 sm:px-6 lg:px-8 pt-16">
+        
+        <!-- Page Header -->
+        <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 border-b border-neutral-200 pb-10">
+            <div class="space-y-2">
+                <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-400 mb-4">
+                    <a routerLink="/home" class="hover:text-neutral-900 transition-colors">Home</a>
+                    <i class="fas fa-chevron-right text-[8px]"></i>
+                    <span class="text-neutral-900">Account</span>
+                </nav>
+                <h1 class="text-4xl sm:text-5xl font-light text-neutral-900 tracking-tight">Order History</h1>
+                <p class="text-xs text-neutral-500 font-medium tracking-wide">Manage and track your latest purchase orders.</p>
             </div>
+            
             @if (!isLoading() && ordersList().length > 0) {
-            <span class="text-xs uppercase tracking-[0.2em] text-neutral-400 font-bold">
-                {{ ordersList().length }} order{{ ordersList().length > 1 ? 's' : '' }} placed
-            </span>
-            }
-        </div>
-
-        <!-- Loading Skeleton -->
-        @if (isLoading()) {
-        <div class="space-y-4">
-            @for (item of [1,2,3]; track $index) {
-            <div class="border border-neutral-100 p-8 space-y-4">
-                <div class="flex justify-between">
-                    <div class="space-y-2">
-                        <div class="h-2 bg-neutral-100 w-24 animate-pulse"></div>
-                        <div class="h-3 bg-neutral-200 w-40 animate-pulse"></div>
+                <div class="flex items-center gap-4 bg-white border border-neutral-200 p-4 shadow-sm">
+                    <div class="w-12 h-12 rounded-full bg-neutral-50 flex items-center justify-center border border-neutral-100">
+                        <i class="fas fa-shopping-bag text-[#c49a7a]"></i>
                     </div>
-                    <div class="h-6 bg-neutral-100 w-20 animate-pulse"></div>
-                </div>
-                <div class="flex gap-2 pt-2">
-                    <div class="w-14 h-14 bg-neutral-100 animate-pulse"></div>
-                    <div class="w-14 h-14 bg-neutral-100 animate-pulse"></div>
-                    <div class="w-14 h-14 bg-neutral-100 animate-pulse"></div>
-                </div>
-            </div>
-            }
-        </div>
-
-        <!-- Empty State -->
-        } @else if (ordersList().length === 0) {
-        <div
-            class="flex flex-col items-center justify-center min-h-[50vh] text-center border border-dashed border-neutral-200 p-12 bg-neutral-50/30">
-            <i class="fa-solid fa-box-open text-5xl text-neutral-200 mb-8"></i>
-            <h2 class="text-2xl font-light text-neutral-900 mb-3">No orders yet</h2>
-            <p class="text-sm text-neutral-400 mb-10 font-light">When you place an order, it will appear here.</p>
-            <a routerLink="/shop"
-                class="border border-neutral-900 bg-neutral-900 text-white px-10 py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-transparent hover:text-neutral-900 transition-colors">
-                Start Shopping
-            </a>
-        </div>
-
-        <!-- Orders List -->
-        } @else {
-        <div class="space-y-4">
-            @for (order of ordersList(); track order._id) {
-            <div
-                class="border border-neutral-100 hover:border-neutral-200 transition-colors duration-300 overflow-hidden">
-
-                <!-- Order Header (Clickable) -->
-                <div (click)="toggleOrder(order._id)"
-                    class="p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 cursor-pointer group">
-
-                    <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-10">
-                        <!-- Order Number -->
-                        <div>
-                            <p class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-1">Order #{{ order.id }}
-                            </p>
-                            <p class="text-xs text-neutral-500">{{ order.createdAt | date:'dd MMM yyyy, h:mm a' }}</p>
-                        </div>
-
-                        <!-- Divider -->
-                        <div class="hidden sm:block w-px h-8 bg-neutral-100"></div>
-
-                        <!-- Items preview -->
-                        <div class="flex items-center gap-2">
-                            @for (item of order.cartItems.slice(0, 3); track item._id) {
-                            <div
-                                class="w-12 h-12 bg-neutral-50 flex items-center justify-center overflow-hidden border border-neutral-100">
-                                <img [src]="item.product.imageCover" [alt]="item.product.title"
-                                    class="w-full h-full object-contain mix-blend-multiply" />
-                            </div>
-                            }
-                            @if (order.cartItems.length > 3) {
-                            <div
-                                class="w-12 h-12 bg-neutral-50 border border-neutral-100 flex items-center justify-center">
-                                <span class="text-[9px] font-bold text-neutral-500">+{{ order.cartItems.length - 3
-                                    }}</span>
-                            </div>
-                            }
-                        </div>
-                    </div>
-
-                    <div class="flex items-center gap-6">
-                        <!-- Total -->
-                        <div class="text-right">
-                            <p class="text-[9px] uppercase tracking-widest text-neutral-400 mb-1">Total</p>
-                            <p class="text-lg font-light text-neutral-900">{{ order.totalOrderPrice |
-                                currency:'EGP':'symbol':'1.0-0' }}</p>
-                        </div>
-
-                        <!-- Status Badges -->
-                        <div class="flex flex-col gap-1.5 items-end">
-                            @if (order.isPaid) {
-                            <span
-                                class="text-[8px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 bg-emerald-50 text-emerald-700 border border-emerald-100">
-                                Paid
-                            </span>
-                            } @else {
-                            <span
-                                class="text-[8px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-100">
-                                Unpaid
-                            </span>
-                            }
-                            @if (order.isDelivered) {
-                            <span
-                                class="text-[8px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 bg-blue-50 text-blue-700 border border-blue-100">
-                                Delivered
-                            </span>
-                            } @else {
-                            <span
-                                class="text-[8px] uppercase tracking-[0.2em] font-bold px-2.5 py-1 bg-neutral-50 text-neutral-500 border border-neutral-100">
-                                Processing
-                            </span>
-                            }
-                        </div>
-
-                        <!-- Expand Arrow -->
-                        <i class="fa-solid fa-chevron-down text-xs text-neutral-400 transition-transform duration-500"
-                            [class.rotate-180]="expandedOrderId() === order._id"></i>
-                    </div>
-                </div>
-
-                <!-- Expandable Details -->
-                @if (expandedOrderId() === order._id) {
-                <div class="border-t border-neutral-100 bg-neutral-50/40 p-6 sm:p-8 space-y-8">
-
-                    <!-- Items List -->
                     <div>
-                        <h4 class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-4 font-bold">Items</h4>
-                        <div class="space-y-3">
-                            @for (item of order.cartItems; track item._id) {
-                            <div class="flex items-center gap-5 p-4 bg-white border border-neutral-100">
-                                <div
-                                    class="w-16 h-16 bg-neutral-50 shrink-0 flex items-center justify-center overflow-hidden border border-neutral-50">
-                                    <img [src]="item.product.imageCover" [alt]="item.product.title"
-                                        class="w-full h-full object-contain mix-blend-multiply" />
-                                </div>
-                                <div class="grow min-w-0">
-                                    <p class="text-[9px] uppercase tracking-widest text-neutral-400 mb-0.5">{{
-                                        item.product.brand.name }}</p>
-                                    <p class="text-sm font-light text-neutral-900 truncate">{{ item.product.title }}</p>
-                                    <p class="text-[9px] uppercase tracking-widest text-neutral-400 mt-0.5">Qty: {{
-                                        item.count }}</p>
-                                </div>
-                                <p class="text-sm font-light text-neutral-900 flex-shrink-0">{{ item.price |
-                                    currency:'EGP':'symbol':'1.0-0' }}</p>
-                            </div>
-                            }
-                        </div>
-                    </div>
-
-                    <!-- Order Meta: 3-column grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 border-t border-neutral-100 pt-6">
-
-                        <!-- Shipping Address -->
-                        <div>
-                            <h4 class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-3 font-bold">Shipping
-                                Address</h4>
-                            <p class="text-sm font-light text-neutral-700">{{ order.shippingAddress.city }}</p>
-                            <p class="text-xs text-neutral-500 mt-1">{{ order.shippingAddress.details }}</p>
-                            <p class="text-xs text-neutral-500 mt-0.5">{{ order.shippingAddress.phone }}</p>
-                        </div>
-
-                        <!-- Payment -->
-                        <div>
-                            <h4 class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-3 font-bold">Payment
-                            </h4>
-                            <div class="flex items-center gap-2">
-                                @if (order.paymentMethodType === 'cash') {
-                                <i class="fas fa-money-bill-wave text-neutral-400 text-xs"></i>
-                                <span class="text-sm font-light text-neutral-700">Cash on Delivery</span>
-                                } @else {
-                                <i class="fas fa-credit-card text-neutral-400 text-xs"></i>
-                                <span class="text-sm font-light text-neutral-700">Online Payment</span>
-                                }
-                            </div>
-                            @if (order.paidAt) {
-                            <p class="text-[9px] text-neutral-400 mt-1">Paid on {{ order.paidAt | date:'dd MMM yyyy' }}
-                            </p>
-                            }
-                        </div>
-
-                        <!-- Order Total -->
-                        <div>
-                            <h4 class="text-[9px] uppercase tracking-[0.3em] text-neutral-400 mb-3 font-bold">Summary
-                            </h4>
-                            <div class="space-y-1.5 text-xs text-neutral-500">
-                                <div class="flex justify-between">
-                                    <span>Items ({{ order.cartItems.length }})</span>
-                                    <span>{{ order.totalOrderPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
-                                </div>
-                                <div class="flex justify-between">
-                                    <span>Shipping</span>
-                                    <span class="text-emerald-600">Free</span>
-                                </div>
-                                <div
-                                    class="flex justify-between text-neutral-900 font-bold pt-1 border-t border-neutral-100 mt-1">
-                                    <span>Total</span>
-                                    <span>{{ order.totalOrderPrice | currency:'EGP':'symbol':'1.0-0' }}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-neutral-400">Total Orders</p>
+                        <p class="text-xl font-light text-neutral-900">{{ ordersList().length }}</p>
                     </div>
                 </div>
+            }
+        </div>
+
+        @if (isLoading()) {
+            <!-- Premium Skeleton -->
+            <div class="space-y-8 animate-pulse">
+                @for (i of [1,2,3]; track $index) {
+                    <div class="bg-white border border-neutral-100 h-64 w-full"></div>
                 }
             </div>
-            }
-        </div>
+        } @else if (ordersList().length === 0) {
+            <!-- Enhanced Empty State -->
+            <div class="flex flex-col items-center justify-center py-32 text-center bg-white border border-neutral-100 shadow-sm px-6">
+                <div class="w-24 h-24 rounded-full bg-neutral-50 flex items-center justify-center mb-8 border border-neutral-100">
+                    <i class="fa-solid fa-box-open text-4xl text-neutral-200"></i>
+                </div>
+                <h2 class="text-2xl font-light text-neutral-900 mb-3 uppercase tracking-wider">No Orders Found</h2>
+                <p class="text-sm text-neutral-400 max-w-sm mb-10 leading-relaxed">It looks like you haven't placed any orders yet. Discover our latest arrivals and start your collection.</p>
+                <a routerLink="/shop" class="bg-neutral-900 text-white px-12 py-4 text-[10px] font-bold uppercase tracking-[0.3em] hover:bg-[#c49a7a] transition-all duration-500 shadow-xl">
+                    Discover Products
+                </a>
+            </div>
+        } @else {
+            <div class="space-y-8">
+                @for (order of ordersList(); track order._id) {
+                    <div class="order-card bg-white border border-neutral-200 overflow-hidden relative group">
+                        
+                        <!-- Top Order Bar -->
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 p-6 sm:p-8 bg-[#fdfdfd] border-b border-neutral-100">
+                            <div>
+                                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">Order Reference</p>
+                                <p class="text-sm font-medium text-neutral-900">#{{ order.id }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">Date Placed</p>
+                                <p class="text-sm font-light text-neutral-700">{{ order.createdAt | date:'dd MMM, yyyy' }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] font-black uppercase tracking-[0.2em] text-neutral-400 mb-2">Total Amount</p>
+                                <p class="text-sm font-bold text-[#c49a7a]">{{ order.totalOrderPrice | currency:'GBP' }}</p>
+                            </div>
+                            <div class="flex justify-end items-start">
+                                <button (click)="toggleOrder(order._id)" 
+                                    class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-neutral-900 hover:text-[#c49a7a] transition-colors cursor-pointer">
+                                    <span>{{ expandedOrderId() === order._id ? 'Close Details' : 'View Details' }}</span>
+                                    <i class="fas fa-chevron-down transition-transform duration-500" [class.rotate-180]="expandedOrderId() === order._id"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Status Timeline -->
+                        <div class="px-8 py-10 bg-white">
+                            <div class="relative max-w-2xl mx-auto">
+                                <!-- Timeline Track -->
+                                <div class="timeline-line"></div>
+                                <div class="timeline-line-active" 
+                                     [style.width]="order.isDelivered ? '100%' : (order.isPaid ? '50%' : '25%')"></div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <!-- Step 1: Placed -->
+                                    <div class="timeline-dot flex flex-col items-center">
+                                        <div class="w-8 h-8 rounded-full border-2 bg-white flex items-center justify-center mb-3 transition-colors duration-500"
+                                            [class.border-[#c49a7a]]="true" [class.text-[#c49a7a]]="true">
+                                            <i class="fas fa-check text-[10px]"></i>
+                                        </div>
+                                        <span class="text-[8px] font-black uppercase tracking-widest text-neutral-900">Placed</span>
+                                    </div>
+
+                                    <!-- Step 2: Payment -->
+                                    <div class="timeline-dot flex flex-col items-center">
+                                        <div class="w-8 h-8 rounded-full border-2 bg-white flex items-center justify-center mb-3 transition-colors duration-500"
+                                            [class.border-[#c49a7a]]="order.isPaid" [class.text-[#c49a7a]]="order.isPaid"
+                                            [class.border-neutral-100]="!order.isPaid" [class.text-neutral-300]="!order.isPaid">
+                                            <i class="fas" [class.fa-check]="order.isPaid" [class.fa-credit-card]="!order.isPaid" class="text-[10px]"></i>
+                                        </div>
+                                        <span class="text-[8px] font-black uppercase tracking-widest transition-colors duration-500"
+                                              [class.text-neutral-900]="order.isPaid" [class.text-neutral-400]="!order.isPaid">Payment</span>
+                                    </div>
+
+                                    <!-- Step 3: Processing/Shipping -->
+                                    <div class="timeline-dot flex flex-col items-center">
+                                        <div class="w-8 h-8 rounded-full border-2 bg-white flex items-center justify-center mb-3 transition-colors duration-500"
+                                            [class.border-[#c49a7a]]="order.isDelivered" [class.text-[#c49a7a]]="order.isDelivered"
+                                            [class.border-neutral-100]="!order.isDelivered" [class.text-neutral-300]="!order.isDelivered">
+                                            <i class="fas" [class.fa-check]="order.isDelivered" [class.fa-truck]="!order.isDelivered" class="text-[10px]"></i>
+                                        </div>
+                                        <span class="text-[8px] font-black uppercase tracking-widest transition-colors duration-500"
+                                              [class.text-neutral-900]="order.isDelivered" [class.text-neutral-400]="!order.isDelivered">Shipping</span>
+                                    </div>
+
+                                    <!-- Step 4: Delivered -->
+                                    <div class="timeline-dot flex flex-col items-center">
+                                        <div class="w-8 h-8 rounded-full border-2 bg-white flex items-center justify-center mb-3 transition-colors duration-500"
+                                            [class.border-[#c49a7a]]="order.isDelivered" [class.text-[#c49a7a]]="order.isDelivered"
+                                            [class.border-neutral-100]="!order.isDelivered" [class.text-neutral-300]="!order.isDelivered">
+                                            <i class="fas" [class.fa-gift]="true" class="text-[10px]"></i>
+                                        </div>
+                                        <span class="text-[8px] font-black uppercase tracking-widest transition-colors duration-500"
+                                              [class.text-neutral-900]="order.isDelivered" [class.text-neutral-400]="!order.isDelivered">Delivered</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Expandable Section -->
+                        @if (expandedOrderId() === order._id) {
+                            <div class="border-t border-neutral-100 animate-fade-in">
+                                <div class="grid grid-cols-1 lg:grid-cols-3">
+                                    
+                                    <!-- Items (Left Col) -->
+                                    <div class="lg:col-span-2 p-8 lg:border-r border-neutral-100">
+                                        <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-900 mb-8 pb-4 border-b border-neutral-50">Items Ordered</h4>
+                                        <div class="space-y-6">
+                                            @for (item of order.cartItems; track item._id) {
+                                                <a [routerLink]="['/details', item.product._id, item.product.slug || 'product']" 
+                                                   class="flex items-center gap-6 group/item cursor-pointer">
+                                                    <div class="w-20 h-24 bg-neutral-50 border border-neutral-100 shrink-0 flex items-center justify-center p-4 overflow-hidden">
+                                                        <img [src]="item.product.imageCover" [alt]="item.product.title" 
+                                                            class="w-full h-full object-contain mix-blend-multiply group-hover/item:scale-110 transition-transform duration-700">
+                                                    </div>
+                                                    <div class="grow min-w-0">
+                                                        <p class="text-[9px] font-bold uppercase tracking-widest text-[#c49a7a] mb-1">{{ item.product.brand?.name || 'Trendo' }}</p>
+                                                        <h5 class="text-sm font-medium text-neutral-900 truncate group-hover/item:text-[#c49a7a] transition-colors">{{ item.product.title }}</h5>
+                                                        <div class="mt-2 flex items-center gap-4 text-[10px] font-medium text-neutral-400">
+                                                            <span>Quantity: {{ item.count }}</span>
+                                                            <span class="w-1 h-1 rounded-full bg-neutral-200"></span>
+                                                            <span>Unit: {{ item.price | currency:'GBP' }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right shrink-0">
+                                                        <p class="text-sm font-bold text-neutral-900">{{ (item.price * item.count) | currency:'GBP' }}</p>
+                                                    </div>
+                                                </a>
+                                            }
+                                        </div>
+                                    </div>
+
+                                    <!-- Summary & Meta (Right Col) -->
+                                    <div class="p-8 bg-neutral-50/50 space-y-10">
+                                        <!-- Address -->
+                                        <div class="space-y-4">
+                                            <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-900">Shipping Address</h4>
+                                            <div class="bg-white border border-neutral-100 p-5 shadow-sm">
+                                                <p class="text-sm font-medium text-neutral-900 mb-1">{{ order.shippingAddress.city }}</p>
+                                                <p class="text-xs text-neutral-500 leading-relaxed">{{ order.shippingAddress.details }}</p>
+                                                <div class="mt-4 pt-4 border-t border-neutral-50 flex items-center gap-2 text-neutral-400">
+                                                    <i class="fas fa-phone text-[10px]"></i>
+                                                    <span class="text-xs">{{ order.shippingAddress.phone }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Summary Info -->
+                                        <div class="space-y-4">
+                                            <h4 class="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-900">Payment Information</h4>
+                                            <div class="space-y-3">
+                                                <div class="flex items-center justify-between text-xs">
+                                                    <span class="text-neutral-500">Payment Method</span>
+                                                    <span class="font-bold text-neutral-900 uppercase tracking-tighter">{{ order.paymentMethodType }}</span>
+                                                </div>
+                                                <div class="flex items-center justify-between text-xs">
+                                                    <span class="text-neutral-500">Shipping Cost</span>
+                                                    <span class="font-bold text-emerald-600">FREE</span>
+                                                </div>
+                                                <div class="pt-4 border-t border-neutral-100 flex items-center justify-between">
+                                                    <span class="text-[10px] font-black uppercase tracking-widest text-neutral-900">Grand Total</span>
+                                                    <span class="text-xl font-light text-neutral-900">{{ order.totalOrderPrice | currency:'GBP' }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Quick Actions -->
+                                        <div class="grid grid-cols-2 gap-3 pt-6">
+                                            <button class="bg-neutral-900 text-white text-[9px] font-bold uppercase tracking-widest py-3 px-4 hover:bg-[#c49a7a] transition-all duration-300">
+                                                Buy Again
+                                            </button>
+                                            <button class="bg-white border border-neutral-200 text-neutral-900 text-[9px] font-bold uppercase tracking-widest py-3 px-4 hover:border-neutral-900 transition-all duration-300">
+                                                Need Help?
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
         }
 
-        <!-- Bottom Aesthetic -->
-        <div class="mt-20 flex justify-center">
-            <div class="flex items-center gap-8">
-                <span class="w-16 h-px bg-neutral-100"></span>
-                <span class="text-[9px] font-bold text-neutral-300 uppercase tracking-[0.5em]">Thank you for shopping
-                    with us</span>
-                <span class="w-16 h-px bg-neutral-100"></span>
+        <!-- Bottom Detail -->
+        <div class="mt-32 flex flex-col items-center gap-6">
+            <div class="flex items-center gap-10">
+                <span class="w-24 h-px bg-neutral-200"></span>
+                <i class="fas fa-crown text-[#c49a7a] text-xs"></i>
+                <span class="w-24 h-px bg-neutral-200"></span>
             </div>
+            <p class="text-[10px] font-black uppercase tracking-[0.5em] text-neutral-300">Excellence in every delivery</p>
         </div>
     </div>
 </section>

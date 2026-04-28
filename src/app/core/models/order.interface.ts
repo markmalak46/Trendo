@@ -3,6 +3,7 @@ export interface OrderProduct {
   ratingsQuantity: number;
   _id: string;
   title: string;
+  slug: string;
   imageCover: string;
   category: { _id: string; name: string; slug: string; image: string };
   brand: { _id: string; name: string; slug: string; image: string };

@@ -84,6 +84,11 @@ export const routes: Routes = [
         title: 'Forgot Password',
     },
     {
+        path: 'support',
+        loadComponent: () => import('./features/support/support.component').then((m) => m.SupportComponent),
+        title: 'Support',
+    },
+    {
         path: '**',
         loadComponent: () =>
             import('./features/notfound/notfound.component').then((m) => m.NotfoundComponent),

@@ -25,7 +25,7 @@ export class RegisterComponent {
     email: ["", [Validators.required, Validators.email]],
     password: ["", [Validators.required, Validators.pattern(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)]],
     rePassword: ["", Validators.required],
-    phone: ["", [Validators.required, Validators.pattern(/^01[125][0-9]{8}$/)]],
+    phone: ["", [Validators.required, Validators.pattern(/^01[0125][0-9]{8}$/)]],
   }, { validators: this.passwordMatch });
 
   passwordMatch(group: AbstractControl) {

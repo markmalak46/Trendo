@@ -1,0 +1,149 @@
+<div id="reviews" class="pt-16 border-t border-neutral-100 mt-16 mx-auto">
+  
+  <div class="flex flex-col sm:flex-row justify-between items-start mb-10 gap-8 border-b border-neutral-100 pb-10">
+    <div class="w-full sm:w-1/3">
+      <h3 class="text-2xl font-light text-neutral-900 tracking-tight mb-6">Customer Reviews</h3>
+      <div class="flex items-center gap-3 mb-2">
+        <span class="text-3xl font-light text-neutral-900 leading-none">{{ ratingsAverage || 0 }}</span>
+        <div class="flex gap-0.5 text-[#c49a7a]">
+          @for (i of [1,2,3,4,5]; track $index) {
+            <i class="fa-star text-sm" [class.fas]="(ratingsAverage || 0) >= i" [class.far]="(ratingsAverage || 0) < i"></i>
+          }
+        </div>
+      </div>
+      <span class="text-2xs font-bold uppercase tracking-widest text-neutral-400">Based on {{ reviews().length }} Reviews</span>
+    </div>
+    <div class="w-full sm:w-2/3 max-w-sm flex flex-col gap-2">
+      @for (stat of ratingPercentages(); track stat.stars) {
+        <div class="flex items-center gap-3 text-2xs font-bold uppercase tracking-widest text-neutral-400">
+          <span class="w-12">{{ stat.stars }} Stars</span>
+          <div class="flex-1 h-1 bg-neutral-100">
+            <div class="h-full bg-neutral-900 transition-all duration-1000" [style.width.%]="stat.percent"></div>
+          </div>
+          <span class="w-8 text-right">{{ stat.percent }}%</span>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Add Review Form -->
+  <div class="mb-10 bg-neutral-50/50 border border-neutral-100 p-6">
+    <h4 class="text-2xs font-bold uppercase tracking-[0.2em] text-neutral-900 mb-4">Write a Review</h4>
+    <div class="flex flex-col sm:flex-row gap-6 items-start">
+      <div class="w-full sm:w-1/4">
+        <span class="block text-[9px] font-bold uppercase tracking-widest text-neutral-400 mb-2">Rating</span>
+        <div class="flex gap-1.5">
+          @for (i of [1,2,3,4,5]; track $index) {
+            <button (click)="setRating(i)" class="cursor-pointer transition-transform hover:scale-110 active:scale-95">
+              <i class="fa-star text-base transition-colors duration-300" 
+                [class.fas]="newReviewRating() >= i" 
+                [class.far]="newReviewRating() < i"
+                [class.text-[#c49a7a]]="newReviewRating() >= i"
+                [class.text-neutral-200]="newReviewRating() < i"></i>
+            </button>
+          }
+        </div>
+      </div>
+      <div class="w-full sm:w-3/4 flex flex-col items-end gap-3">
+        <textarea [(ngModel)]="newReviewText" placeholder="Describe your experience..." rows="2"
+          class="w-full bg-white border border-neutral-200 p-3 text-xs font-light text-neutral-900 focus:ring-0 focus:border-neutral-900 transition-colors resize-none placeholder:text-neutral-400"></textarea>
+        <button (click)="submitReview()" [disabled]="isSubmittingReview()"
+          class="bg-neutral-900 text-white px-8 py-3 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-[#c49a7a] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-2 group">
+          @if (isSubmittingReview()) {
+            Submitting... <div class="w-2 h-2 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+          } @else {
+            Publish <i class="fas fa-arrow-right text-[7px] group-hover:translate-x-1 transition-transform"></i>
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reviews List -->
+  @if (isReviewsLoading()) {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      @for (item of [1,2]; track $index) {
+        <div class="pb-6 border-b border-neutral-100 animate-pulse">
+          <div class="flex gap-3 mb-3">
+            <div class="w-8 h-8 bg-neutral-100"></div>
+            <div class="space-y-2 flex-1">
+              <div class="h-2 bg-neutral-200 w-1/4"></div>
+              <div class="h-2 bg-neutral-200 w-1/6"></div>
+            </div>
+          </div>
+          <div class="h-2 bg-neutral-200 w-full mb-2 ml-11"></div>
+          <div class="h-2 bg-neutral-200 w-2/3 ml-11"></div>
+        </div>
+      }
+    </div>
+  } @else if (reviews().length === 0) {
+    <div class="py-12 text-center border-t border-b border-neutral-100">
+      <p class="text-xs font-light text-neutral-500">No reviews yet. Be the first to review this item.</p>
+    </div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+      @for (review of (showAllReviews() ? reviews() : (reviews() | slice:0:4)); track review._id) {
+        <div class="py-6 border-b border-neutral-100 group relative">
+          
+          <div class="flex justify-between items-start mb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 bg-neutral-50 border border-neutral-200 flex items-center justify-center text-neutral-900 text-2xs font-black uppercase shrink-0">
+                {{ review.user.name.charAt(0) }}
+              </div>
+              <div>
+                <h4 class="text-[11px] font-bold text-neutral-900 tracking-wider flex items-center gap-2">
+                  {{ review.user.name }}
+                  <i class="fas fa-check text-[#c49a7a] text-[8px]" title="Verified Buyer"></i>
+                </h4>
+                <div class="flex gap-0.5 mt-1">
+                  @for (i of [1,2,3,4,5]; track $index) {
+                    <i class="fa-star text-[8px]" [class.fas]="review.rating >= i" [class.far]="review.rating < i" [class.text-[#c49a7a]]="review.rating >= i" [class.text-neutral-200]="review.rating < i"></i>
+                  }
+                </div>
+              </div>
+            </div>
+            <p class="text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-400 mt-1">{{ review.createdAt | date:'MMM d, y' }}</p>
+          </div>
+
+          @if (editingReviewId() === review._id) {
+            <div class="ml-11 mt-3">
+              <div class="flex items-center gap-2 mb-2">
+                @for (i of [1,2,3,4,5]; track $index) {
+                  <button (click)="setEditRating(i)" class="cursor-pointer transition-transform hover:scale-110">
+                    <i class="fa-star text-sm" 
+                      [class.fas]="editReviewRating() >= i" 
+                      [class.far]="editReviewRating() < i"
+                      [class.text-[#c49a7a]]="editReviewRating() >= i"
+                      [class.text-neutral-200]="editReviewRating() < i"></i>
+                  </button>
+                }
+              </div>
+              <textarea [(ngModel)]="editReviewText" class="w-full bg-neutral-50 border border-neutral-200 p-3 text-xs font-light text-neutral-900 focus:ring-0 focus:border-neutral-900 transition-colors resize-none" rows="2"></textarea>
+              <div class="flex gap-3 mt-3">
+                <button (click)="cancelEdit()" class="text-[9px] font-bold uppercase tracking-widest text-neutral-500 hover:text-neutral-900 transition-colors">Cancel</button>
+                <button (click)="updateReview(review._id)" [disabled]="isUpdatingReview()" class="text-[9px] font-bold uppercase tracking-widest text-[#c49a7a] hover:text-neutral-900 transition-all disabled:opacity-50">Save</button>
+              </div>
+            </div>
+          } @else {
+            <p class="text-neutral-600 text-sm font-light leading-relaxed ml-11">"{{ review.review }}"</p>
+            
+            @if (review.user._id === currentUserId()) {
+              <div class="flex gap-3 ml-11 mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <button (click)="startEdit(review)" class="text-[9px] font-bold uppercase tracking-widest text-neutral-400 hover:text-neutral-900 transition-colors cursor-pointer">Edit</button>
+                <button (click)="deleteReview(review._id)" class="text-[9px] font-bold uppercase tracking-widest text-neutral-400 hover:text-red-500 transition-colors cursor-pointer">Delete</button>
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+
+    @if (!showAllReviews() && reviews().length > 4) {
+      <div class="mt-8 text-center border-t border-neutral-100 pt-6">
+        <button (click)="showAllReviews.set(true)" class="text-2xs font-bold uppercase tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors cursor-pointer pb-1 border-b border-neutral-900 hover:border-[#c49a7a]">
+          Load All Reviews ({{ reviews().length }})
+        </button>
+      </div>
+    }
+  }
+</div>

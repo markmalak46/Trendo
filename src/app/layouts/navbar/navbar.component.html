@@ -4,7 +4,7 @@
 
         <!-- Logo -->
         <a routerLink="/home" class="shrink-0 cursor-pointer flex items-center gap-2">
-            <img src="/assets/logo.png" alt="Trendo Logo" class="h-8 object-contain" />
+            <img src="assets/logo.png" alt="Trendo Logo" class="h-8 object-contain" />
         </a>
 
         <!-- Desktop Links -->
@@ -33,6 +33,12 @@
                 <span
                     class="absolute bottom-0 left-0 w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-full"></span>
             </a>
+            <a routerLink="/support" routerLinkActive="active"
+                class="relative text-xs uppercase font-bold tracking-[0.2em] text-neutral-400 hover:text-[#c49a7a] transition-colors py-1 group">
+                Contact Us
+                <span
+                    class="absolute bottom-0 left-0 w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-full"></span>
+            </a>
         </div>
 
         <!-- Actions -->
@@ -58,15 +64,30 @@
 
             <div class="hidden sm:flex items-center pl-5 lg:pl-6 ml-2 border-l border-neutral-200 gap-3">
                 @if(isLogged()){
-                <a routerLink="/profile" class="flex items-center gap-2.5 group cursor-pointer">
-                    <div
-                        class="w-8 h-8 rounded-full bg-linear-to-br from-[#c49a7a] to-neutral-700 flex items-center justify-center text-white text-xs font-bold shadow-sm group-hover:scale-110 transition-transform">
-                        {{ userName().charAt(0).toUpperCase() }}
-                    </div>
-                    <span
-                        class="text-xs font-bold text-neutral-700 group-hover:text-[#c49a7a] transition-colors hidden lg:block max-w-24 truncate">{{
-                        userName().split(' ')[0] }}</span>
-                </a>
+               <a routerLink="/profile" class="flex items-center gap-2.5 group cursor-pointer">
+
+  <!-- Avatar -->
+  <div
+    class="w-8 h-8 bg-neutral-900 flex items-center justify-center text-white text-xs font-bold relative overflow-hidden shadow-sm transition-transform duration-300 group-hover:scale-110">
+
+    <!-- hover sweep -->
+    <div
+      class="absolute inset-0 bg-[#c49a7a] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+    </div>
+
+    <span class="relative z-10">
+      {{ userName().charAt(0).toUpperCase() }}
+    </span>
+
+  </div>
+
+  <!-- Name -->
+  <span
+    class="text-xs font-bold text-neutral-700 group-hover:text-[#c49a7a] transition-colors hidden lg:block max-w-24 truncate">
+    {{ userName().split(' ')[0] }}
+  </span>
+
+</a>
                 <button (click)="openSignOutModal()"
                     class="text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-white hover:bg-[#c49a7a] border border-neutral-900 hover:border-[#c49a7a] px-4 py-2 transition-all duration-300 cursor-pointer">Sign
                     Out</button>
@@ -95,7 +116,7 @@
     tabindex="-1">
 
     <div class="mb-12 flex items-center justify-between">
-        <img src="/assets/logo.png" alt="Trendo Logo" class="h-6 object-contain" />
+        <img src="assets/logo.png" alt="Trendo Logo" class="h-6 object-contain" />
         <button type="button" data-drawer-hide="drawer-right"
             class="flex cursor-pointer items-center justify-center h-8 w-8 text-neutral-900 transition-transform hover:rotate-90 duration-500">
             <i class="fas fa-times text-xl"></i>
@@ -119,6 +140,10 @@
         <a routerLink="/brands" data-drawer-hide="drawer-right"
             class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
             <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Brands
+        </a>
+        <a routerLink="/support" data-drawer-hide="drawer-right"
+            class="group text-xs uppercase font-bold tracking-[0.2em] text-neutral-900 hover:text-[#c49a7a] transition-colors flex items-center gap-2">
+            <span class="w-0 h-px bg-[#c49a7a] transition-all duration-300 group-hover:w-4"></span> Contact Us
         </a>
     </nav>
 
@@ -148,14 +173,25 @@
     <div class="mt-auto flex flex-col gap-4">
         @if(isLogged()){
         <div class="flex items-center gap-3 p-4 bg-neutral-50 rounded-xl border border-neutral-100 mb-2">
+
             <div
-                class="w-10 h-10 rounded-full bg-linear-to-br from-[#c49a7a] to-neutral-700 flex items-center justify-center text-white text-sm font-bold shadow-sm shrink-0">
-                {{ userName().charAt(0).toUpperCase() }}
+                class="w-10 h-10 bg-neutral-900 flex items-center justify-center shrink-0 relative overflow-hidden group">
+
+                <div
+                    class="absolute inset-0 bg-[#c49a7a] translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out">
+                </div>
+
+                <span class="relative z-10 text-sm font-bold text-white">
+                    {{ userName().charAt(0).toUpperCase() }}
+                </span>
+
             </div>
+
             <div class="min-w-0">
                 <p class="text-sm font-bold text-neutral-900 truncate">{{ userName() }}</p>
                 <p class="text-2xs text-neutral-400 uppercase tracking-widest">Member</p>
             </div>
+
         </div>
         <a (click)="openSignOutModal()" data-drawer-hide="drawer-right"
             class="w-full border border-neutral-900 bg-white py-4 text-xs font-bold uppercase tracking-[0.2em] text-neutral-900 hover:bg-[#c49a7a] hover:border-[#c49a7a] hover:text-white transition-colors text-center cursor-pointer">
@@ -167,7 +203,7 @@
             Sign In
         </a>
         <a routerLink="/register" data-drawer-hide="drawer-right"
-            class="w-full bg-neutral-900 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white hover:bg-[#c49a7a] hover:border-[#c49a7a] bg-neutral-900 border border-neutral-900 transition-colors text-center cursor-pointer">
+            class="w-full bg-neutral-900 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white hover:bg-[#c49a7a] hover:border-[#c49a7a]border border-neutral-900 transition-colors text-center cursor-pointer">
             Create Account
         </a>
         }

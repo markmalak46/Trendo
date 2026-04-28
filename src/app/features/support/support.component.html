@@ -1,0 +1,220 @@
+<section class="min-h-screen relative font-sans bg-white">
+
+  <div class="relative w-full h-100 mb-16 flex flex-col justify-center items-center text-center px-4">
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('assets/login-fashion-bg.png')"></div>
+    <div class="absolute inset-0 bg-neutral-900/60 backdrop-blur-[2px]"></div>
+    <div class="relative z-10 max-w-3xl mx-auto animate-fade-in-up mt-16">
+      <h1 class="text-4xl md:text-5xl font-light text-white tracking-tight mb-4">
+        How Can We <strong class="font-bold">Help You?</strong>
+      </h1>
+      <p class="text-white/80 max-w-2xl mx-auto text-sm md:text-base tracking-wide leading-relaxed">
+        Whether you have a question about an order, our return policy, or anything else, our team is ready to answer all
+        your questions. We're here to elevate your experience.
+      </p>
+    </div>
+  </div>
+
+  <div class="container mx-auto max-w-6xl px-4 sm:px-6 pb-20">
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+
+      <!-- Contact Form Area -->
+      <div class="animate-slide-in-left bg-white">
+        <h2 class="text-xl font-light text-neutral-900 mb-8 tracking-tight border-b border-neutral-100 pb-4">
+          Send Us A <strong class="font-bold">Message</strong>
+        </h2>
+
+        <form [formGroup]="supportForm" (ngSubmit)="onSubmit()" class="space-y-6">
+
+          <div>
+            <label for="name" class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">Full
+              Name</label>
+            <input type="text" id="name" formControlName="name"
+              class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 focus:border-neutral-900 focus:ring-0 outline-none transition-colors text-sm text-neutral-900"
+              placeholder="John Doe" />
+
+            @if(supportForm.get('name')?.errors && supportForm.get('name')?.touched) {
+            <p class="text-red-500 text-xs mt-1">
+              @if(supportForm.get('name')?.getError('required')) { Name is required }
+              @if(supportForm.get('name')?.getError('minlength')) { Name must be at least 3 characters }
+            </p>
+            }
+          </div>
+
+          <div>
+            <label for="email" class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">Email
+              Address</label>
+            <input type="email" id="email" formControlName="email"
+              class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 focus:border-neutral-900 focus:ring-0 outline-none transition-colors text-sm text-neutral-900"
+              placeholder="you@example.com" />
+
+            @if(supportForm.get('email')?.errors && supportForm.get('email')?.touched) {
+            <p class="text-red-500 text-xs mt-1">
+              @if(supportForm.get('email')?.getError('required')) { Email is required }
+              @if(supportForm.get('email')?.getError('email')) { Please enter a valid email }
+            </p>
+            }
+          </div>
+
+          <div>
+            <label for="subject"
+              class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">Subject</label>
+            <input type="text" id="subject" formControlName="subject"
+              class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 focus:border-neutral-900 focus:ring-0 outline-none transition-colors text-sm text-neutral-900"
+              placeholder="Order Inquiry" />
+
+            @if(supportForm.get('subject')?.errors && supportForm.get('subject')?.touched) {
+            <p class="text-red-500 text-xs mt-1">
+              @if(supportForm.get('subject')?.getError('required')) { Subject is required }
+              @if(supportForm.get('subject')?.getError('minlength')) { Subject must be at least 5 characters }
+            </p>
+            }
+          </div>
+
+          <div>
+            <label for="message" class="block text-xs font-bold uppercase tracking-wider text-neutral-500 mb-2">How can
+              we help?</label>
+            <textarea id="message" formControlName="message" rows="5"
+              class="w-full px-4 py-3 bg-neutral-50 border border-neutral-200 focus:border-neutral-900 focus:ring-0 outline-none transition-colors text-sm text-neutral-900 resize-none"
+              placeholder="Write your message here..."></textarea>
+
+            @if(supportForm.get('message')?.errors && supportForm.get('message')?.touched) {
+            <p class="text-red-500 text-xs mt-1">
+              @if(supportForm.get('message')?.getError('required')) { Message is required }
+              @if(supportForm.get('message')?.getError('minlength')) { Message must be at least 10 characters }
+            </p>
+            }
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" [disabled]="isLoading"
+              class="w-full flex cursor-pointer justify-center items-center gap-2 text-white font-bold uppercase tracking-widest text-xs py-4 transition-all duration-300"
+              [ngClass]="{
+    'bg-neutral-900 hover:bg-[#c49a7a]': !isSent,
+    'bg-emerald-600': isSent,
+    'cursor-not-allowed': isLoading
+  }">
+              @if (isLoading) {
+              <span class="animate-spin border-2 border-white border-t-transparent rounded-full w-4 h-4"></span>
+              <span>Sending...</span>
+              } @else {
+              <span>{{ isSent ? '✔ Message Sent' : 'Send Message' }}</span>
+              }
+
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- FAQ & Info Area -->
+      <div class="animate-slide-in-right flex flex-col gap-12">
+
+        <!-- Contact Info -->
+        <div>
+          <h2 class="text-xl font-light text-neutral-900 mb-8 tracking-tight border-b border-neutral-100 pb-4">
+            Contact <strong class="font-bold">Information</strong>
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="space-y-6">
+              <div class="flex items-start gap-4 group">
+                <div
+                  class="w-10 h-10 border border-neutral-200 flex items-center justify-center text-neutral-900 group-hover:border-[#c49a7a] group-hover:text-[#c49a7a] transition-colors shrink-0">
+                  <i class="fa-solid fa-phone"></i>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-900 mb-1">Call Us</h3>
+                  <p class="text-neutral-500 text-sm hover:text-[#c49a7a] transition-colors cursor-pointer">+20 122 4840 495</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 group">
+                <div
+                  class="w-10 h-10 border border-neutral-200 flex items-center justify-center text-neutral-900 group-hover:border-[#c49a7a] group-hover:text-[#c49a7a] transition-colors shrink-0">
+                  <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-900 mb-1">Email Us</h3>
+                  <p class="text-neutral-500 text-sm hover:text-[#c49a7a] transition-colors cursor-pointer">
+                    support&#64;trendo.com</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4 group">
+                <div
+                  class="w-10 h-10 border border-neutral-200 flex items-center justify-center text-neutral-900 group-hover:border-[#c49a7a] group-hover:text-[#c49a7a] transition-colors shrink-0">
+                  <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-900 mb-1">Visit Us</h3>
+                  <p class="text-neutral-500 text-sm">123 Fashion Ave, NY 10001</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-6">
+              <div class="flex items-start gap-4 group">
+                <div
+                  class="w-10 h-10 border border-neutral-200 flex items-center justify-center text-neutral-900 group-hover:border-[#c49a7a] group-hover:text-[#c49a7a] transition-colors shrink-0">
+                  <i class="fa-regular fa-clock"></i>
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-900 mb-1">Service Hours</h3>
+                  <p class="text-neutral-500 text-sm">Mon-Fri: 9am - 8pm EST<br>Sat-Sun: 10am - 6pm EST</p>
+                </div>
+              </div>
+
+              <div class="p-5 bg-neutral-50 border border-neutral-200 mt-2">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-neutral-900 mb-2 flex items-center gap-2">
+                  <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                  Live Chat Available
+                </h3>
+                <p class="text-neutral-500 text-xs mb-4">Need immediate assistance? Our agents are online and ready to
+                  help.</p>
+               <button
+  (click)="openWhatsApp()"
+  class="w-full text-xs cursor-pointer font-bold uppercase tracking-wider text-neutral-900 border border-neutral-900 py-2 hover:bg-neutral-900 hover:text-white transition-colors"
+>
+  Start Chat
+</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div>
+          <h2 class="text-xl font-light text-neutral-900 mb-8 tracking-tight border-b border-neutral-100 pb-4">
+            Frequently Asked <strong class="font-bold">Questions</strong>
+          </h2>
+
+          <div class="flex flex-col border-t border-neutral-200">
+            @for (faq of faqs; track faq.question; let i = $index) {
+            <div class="border-b border-neutral-200 overflow-hidden transition-all duration-300">
+              <button (click)="toggleFaq(i)"
+                class="w-full py-5 flex justify-between items-center text-left focus:outline-none group">
+                <span class="text-sm font-bold text-neutral-900 group-hover:text-[#c49a7a] transition-colors"
+                  [class.text-[#c49a7a]]="faq.isOpen">
+                  {{ faq.question }}
+                </span>
+                <div class="text-neutral-400 group-hover:text-[#c49a7a] transition-colors"
+                  [class.text-[#c49a7a]]="faq.isOpen">
+                  <i class="fa-solid fa-plus transition-transform duration-300" [class.rotate-45]="faq.isOpen"
+                    [class.fa-minus]="faq.isOpen"></i>
+                </div>
+              </button>
+
+              <div class="overflow-hidden transition-all duration-300 ease-in-out"
+                [style.maxHeight]="faq.isOpen ? '200px' : '0px'" [style.opacity]="faq.isOpen ? '1' : '0'">
+                <div class="pb-6 text-sm text-neutral-500 leading-relaxed pr-8">
+                  {{ faq.answer }}
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
