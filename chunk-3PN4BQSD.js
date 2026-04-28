@@ -1,0 +1,1 @@
+import{a as o}from"./chunk-3F5PQW33.js";import{G as e,L as r,Mb as n}from"./chunk-O4I7JUI4.js";var a=class t{httpClient=r(n);getAllBrands(){return this.httpClient.get(`${o.baseUrl}/api/v1/brands`)}static \u0275fac=function(i){return new(i||t)};static \u0275prov=e({token:t,factory:t.\u0275fac,providedIn:"root"})};export{a};
